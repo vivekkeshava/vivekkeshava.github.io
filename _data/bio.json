@@ -1,0 +1,108 @@
+{
+  "basics": {
+    "name": "Vivek Keshava",
+    "label": "Student",
+    "picture": "https://github.com/vivekkeshava.png",
+    "email": "vkeshav2@asu.edu",
+    "phone": "602-815-9913",
+    "website": "https://vivekkeshava.github.io",
+    "summary": "I'm a graduate student in computer science at Arizona State University. I will be graduating in May 2023. I am actively looking for full time opportunities",
+    "location": { "address": "", "postalCode": "85281", "city": "Tempe", "countryCode": "USA", "region": "Arizona" },
+    "profiles": [
+      { "network": "github", "username": "vivekkeshava", "url": "http://github.com/vivekkeshava" },
+      { "network": "linkedin", "username": "vivekkeshava", "url": "http://linkedin.com/in/vivekkeshava" },
+      { "network": "twitter", "username": "vivekkeshava", "url": "http://twitter.com/vivekkeshava" },
+      { "network": "instagram", "username": "vivek_keshava", "url": "http://instagram.com/vivek_keshava" }
+    ]
+  },
+  "interests": [
+    { "name": "Software Development" },
+    { "name": "Machine Learning" },
+    { "name": "Micro Services" },
+    { "name": "Robotics" },
+    { "name": "Cloud Systems" }
+  ],
+  "skills": [
+    {
+      "name": "Languages and Frameworks",
+      "keywords": [ "C", "C++", "Java", "Python", "MySQL", "HTML5" ]
+    },
+    {
+      "name": "Other Technologies",
+      "keywords": [ "Kubernetes", "Docker", "J2EE", "Linux", "CI/CD", "Git/GitHub" ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Arizona State University, Tempe, AZ",
+      "area": "Computer Science (expected Fall, 2022)",
+      "studyType": "Masters",
+      "startDate": "2022-01-10",
+      "endDate": "Present",
+      "courses": [
+      ]
+    }
+  ],
+  "work": [
+    {
+      "company": "Arizona State Univeristy",
+      "position": "Teaching Assistant/ Instructor",
+      "website": "https://www.asu.edu/",
+      "startDate": "2022-08-01",
+      "endDate": "Present",
+      "summary": "Instructor for CSE485 Capstone Project class",
+      "highlights": [
+        "Working as Instructor for CSE 485 under Dr. Helen Chavez.",
+        "Handling a class of 110 students with their Capstone projects.",
+        "Guiding the students on AGILE and SCRUM methodologies for software development on real life projects."
+      ]
+    },
+    {
+      "company": "Micro Focus",
+      "position": "Software Developer 2",
+      "website": "https://www.microfocus.com/",
+      "startDate": "2018-08-01",
+      "endDate": "2021-12-21",
+      "summary": "",
+      "highlights": [
+        "Spearheaded multiple features for the team on microservices and cloud-based deployments and delivered it on time with high quality.",
+        "Conducted technical customer support sessions on the new features to multiple customer-facing teams across the globe.",
+        "Solved time critical issues for the global customers with high turnaround time. Scrum/AGILE methodology was used during the development process. Followed the Test-driven development model to ensure good code quality.",
+        "Architected and migrated the on-premises NOM product to the AWS cloud platform to facilitate support for a SaaS based model.",
+        "Developed scalable micro-service architecture system to fetch and process data from multiple data streams and databases.",
+        "Developed REST APIs (Xml/Json) for backend framework of NNMi product to render analytics on network data fetched from multiple networking devices. Apache Pulsar was used for data streaming. Worked with Zookeeper services for password and key management"
+      ]
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "IEEE SJCE Student Chapter",
+      "website": "http://ieeesjce.com",
+      "position": "Chairman",
+      "startDate": "2017-08-01",
+      "endDate": "2018-05-01",
+      "summary": "Chairman of the IEEE-SJCE student chapter",
+      "highlights": [
+        "Played a pivotal role in ensuring the highest ever membership in the student club of 250+ members, since its inception in 1992",
+        "Increased the emphasis on industry-academia interaction by starting the initiative of Industrial visits to manufacturing plants for the students."
+      ]
+    }
+  ],
+  "Achievements/ Competencies": [
+    {
+      "title": "Top 20 Finalists in the Texas Instruments IICDC Challenge ",
+      "date": "2018",
+      "awarder": "IIM Bangalore and Govt. of India",
+      "summary": "•	Top 20 Finalists in the Texas Instruments IICDC Challenge organized by IIM Bangalore and Govt. of India, from a total of 15000 ideas across 1000 engineering colleges of the country."
+    }
+  ],
+  "Publications": [
+    {
+      "title": "Robotic Mapping Using Autonomous Vehicle",
+      "date": "2020",
+      "website": "https://link.springer.com/article/10.1007/s42979-020-00190-3",
+      "awarder": "SN Computer Science (Springer) Volume-1, Issue-22 May 2020",
+      "summary": "•	Top 20 Finalists in the Texas Instruments IICDC Challenge organized by IIM Bangalore and Govt. of India, from a total of 15000 ideas across 1000 engineering colleges of the country."
+    }
+  ]
+}
