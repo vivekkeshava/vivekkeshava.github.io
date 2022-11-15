@@ -22,7 +22,5 @@ A Java based RDF database management system was developed using the Minibase cod
   <li>The database was integerated with various functionalities like multilevel joins and queries</li>
   <li> Three different Joins were implemented namely Hash Oriented Joins, Tuple Oriented Join and Sort Merge Join</li>
 </ul>
-
-{% gist 9defa1fb3f4eb593ba5fa9eacedca960 %}
  
 Source: <a href="https://github.com/vivekkeshava/RDFDatabase">RDFDatabase</a>
