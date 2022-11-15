@@ -3,10 +3,12 @@ layout: project
 type: project
 image: img/cotton/white-netflix.jpg
 title: "Netflix Recommendation System"
-date: 2014
+date: 2022
 published: true
 labels:
-  - Lisp
+  - Java
+  - Algorithm
+  - SQL
   - GitHub
 summary: "A Netflix Recommendation System"
 ---
