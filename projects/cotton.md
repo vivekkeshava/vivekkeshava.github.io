@@ -2,7 +2,7 @@
 layout: project
 type: project
 image: img/cotton/white-netflix.jpg
-title: "Cotton"
+title: "Netflix Recommendation System"
 date: 2014
 published: true
 labels:
