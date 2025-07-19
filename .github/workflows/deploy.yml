@@ -42,7 +42,14 @@ jobs:
           echo "Build completed"
         env:
           NODE_ENV: production
-      
+          
+      - name: Final verification
+        run: |
+          echo "=== Final out directory check ==="
+          ls -la out/
+          echo ""
+          echo "Total files in out:"
+          find out -type f | wc -l
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
