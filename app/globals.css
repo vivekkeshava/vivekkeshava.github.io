@@ -148,7 +148,6 @@ h6 {
 
 p,
 span,
-div,
 li {
   color: inherit !important;
 }
@@ -164,7 +163,7 @@ li {
 /* Ensure navigation text is visible */
 nav button,
 nav a {
-  color: rgb(31 41 55) !important; /* gray-800 */
+  color: inherit; /* gray-800 */
 }
 
 /* Hero section text */
