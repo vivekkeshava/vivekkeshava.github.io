@@ -35,11 +35,13 @@ jobs:
       - name: Install dependencies
         run: npm install
       
-      - name: Build and Export with Next.js
+      - name: Build with Next.js
         run: |
           echo "Starting Next.js build..."
           npm run build
           echo "Build completed"
+        env:
+          NODE_ENV: production
       - name: Final verification
         run: |
           echo "=== Final out directory check ==="
