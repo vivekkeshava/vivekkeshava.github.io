@@ -36,6 +36,7 @@ export default function Portfolio() {
     { name: "Education", href: "#education" },
     { name: "Projects", href: "#projects" },
     { name: "Publications", href: "#publications" },
+    { name: "Resources", href: "#resources" },
     { name: "Contact", href: "#contact" },
   ]
 
@@ -134,7 +135,7 @@ export default function Portfolio() {
       {/* Hero Section */}
       <section
         id="about"
-        className="relative bg-gradient-to-r from-gray-900 to-gray-800 text-white py-20 pt-32 overflow-hidden"
+        className="relative bg-gradient-to-r from-gray-900 to-gray-800 text-white py-24 pt-40 overflow-hidden"
       >
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
@@ -152,8 +153,8 @@ export default function Portfolio() {
                     <Image
                       src="/images/vivek-profile.png"
                       alt="Vivek Keshava - Software Engineer"
-                      width={288}
-                      height={288}
+                      width={350}
+                      height={350}
                       className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                       priority
                     />
@@ -185,7 +186,7 @@ export default function Portfolio() {
                 <div className="animate-fade-in-up delay-200">
                   <p className="text-lg mb-8 max-w-2xl mx-auto lg:mx-0 text-gray-200 leading-relaxed">
                     Passionate software engineer with expertise in microservices, cloud technologies, and scalable
-                    applications. Currently building innovative payment solutions at Credit Acceptance Corporation.
+                    applications. Currently building used car marketplace at Credit Acceptance Corporation.
                   </p>
                 </div>
 
@@ -652,24 +653,7 @@ export default function Portfolio() {
                 </Card>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="animate-slide-in-left delay-200">
-                  <Card className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <Award className="w-5 h-5 text-purple-600" />
-                        Leadership Achievement
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-700">
-                        Served as Chairman at IEEE-SJCE, driving the highest-ever membership of{" "}
-                        <strong>250+ members</strong> since the club's inception in 1992.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-
+              <div className="grid md:grid-cols-1 gap-6">
                 <div className="animate-slide-in-right delay-200">
                   <Card className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                     <CardHeader>
@@ -688,6 +672,31 @@ export default function Portfolio() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+     {/* Resources Section */}
+      <section id="resources" className="py-16 bg-white scroll-mt-16">
+        <div className="container mx-auto px-4">
+          <div className="animate-fade-in-up">
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Books I've Read</h2>
+          </div>
+          <div className="max-w-2xl mx-auto space-y-8">
+            <div className="animate-fade-in-up delay-100">
+              <h3 className="text-2xl font-semibold mb-4 text-gray-800">2025</h3>
+              <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
+                <li>The library of borrowed Hearts, Lucy G</li>
+              </ul>
+            </div>
+            <div className="animate-fade-in-up delay-200">
+              <h3 className="text-2xl font-semibold mb-4 text-gray-800">2024</h3>
+              <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
+                <li>How to Stop Time, Matt Haig</li>
+                <li>The Kite Runner, Khaled Hosseini</li>
+              </ul>
+            </div>
+            {/* Add more years and books as needed */}
           </div>
         </div>
       </section>
@@ -715,17 +724,6 @@ export default function Portfolio() {
                     vivek.keshava1@gmail.com
                   </Link>
                 </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="bg-white text-gray-900 hover:bg-gray-100 transition-all duration-300 transform hover:scale-105"
-                >
-                  <Link href="tel:602-815-9913">
-                    <Phone className="w-5 h-5 mr-2" />
-                    602-815-9913
-                  </Link>
-                </Button>
               </div>
             </div>
           </div>
@@ -735,7 +733,7 @@ export default function Portfolio() {
       {/* Footer */}
       <footer className="bg-gray-800 text-gray-400 py-8">
         <div className="container mx-auto px-4 text-center">
-          <p>&copy; 2024 Vivek Keshava. All rights reserved.</p>
+          <p>&copy; 2025 Vivek Keshava. All rights reserved.</p>
         </div>
       </footer>
     </div>
