@@ -40,14 +40,10 @@ jobs:
           echo "Starting Next.js build..."
           npm run build
           echo "Build completed"
-          npm run export
-          echo "Export completed"
-        env:
-          NODE_ENV: production
-
       - name: Final verification
         run: |
           echo "=== Final out directory check ==="
+          ls -la
           ls -la out/
           echo ""
           echo "Total files in out:"
