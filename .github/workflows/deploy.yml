@@ -38,7 +38,7 @@ jobs:
       - name: Build with Next.js
         run: |
           echo "Starting Next.js build..."
-          npm run build && npm run export
+          npm run build
           echo "Build completed"
         env:
           NODE_ENV: production
