@@ -19,7 +19,6 @@ import {
   Globe,
   Menu,
   X,
-  ChevronDown,
 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
@@ -82,7 +81,7 @@ export default function Portfolio() {
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <div className="font-bold text-xl text-gray-900">Vivek Keshava</div>
+            <div className={`font-bold text-xl ${isScrolled ? "text-gray-900" : "text-white"}`}>Vivek Keshava</div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex space-x-8">
@@ -90,10 +89,14 @@ export default function Portfolio() {
                 <button
                   key={item.name}
                   onClick={() => scrollToSection(item.href)}
-                  className={`text-sm font-medium transition-colors hover:text-gray-900 ${
-                    activeSection === item.href.substring(1)
-                      ? "text-gray-900 border-b-2 border-gray-900 font-semibold"
-                      : "text-gray-700"
+                  className={`text-sm font-medium transition-colors ${
+                    isScrolled
+                      ? activeSection === item.href.substring(1)
+                        ? "text-gray-900 border-b-2 border-gray-900 font-semibold"
+                        : "text-gray-700 hover:text-gray-900"
+                      : activeSection === item.href.substring(1)
+                        ? "text-white border-b-2 border-white font-semibold"
+                        : "text-white/80 hover:text-white"
                   }`}
                 >
                   {item.name}
@@ -102,8 +105,12 @@ export default function Portfolio() {
             </div>
 
             {/* Mobile Menu Button */}
-            <button className="md:hidden p-2 text-gray-900" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? (
+                <X className={`w-6 h-6 ${isScrolled ? "text-gray-900" : "text-white"}`} />
+              ) : (
+                <Menu className={`w-6 h-6 ${isScrolled ? "text-gray-900" : "text-white"}`} />
+              )}
             </button>
           </div>
 
