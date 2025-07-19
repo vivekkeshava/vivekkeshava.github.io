@@ -143,7 +143,7 @@ export default function Portfolio() {
                 <div className="relative">
                   <div className="w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl backdrop-blur-sm">
                     <Image
-                      src="/images/vivek-profile.jpg"
+                      src="/images/vivek-profile.png"
                       alt="Vivek Keshava - Software Engineer"
                       width={288}
                       height={288}
@@ -227,17 +227,6 @@ export default function Portfolio() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Scroll Indicator */}
-            <div className="animate-bounce mt-12 text-center">
-              <button
-                onClick={() => scrollToSection("#experience")}
-                className="text-white/70 hover:text-white transition-colors"
-              >
-                <ChevronDown className="w-8 h-8 mx-auto" />
-                <p className="text-sm mt-2">Scroll to explore</p>
-              </button>
             </div>
           </div>
         </div>
