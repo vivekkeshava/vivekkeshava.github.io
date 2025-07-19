@@ -686,13 +686,13 @@ export default function Portfolio() {
             <div className="animate-fade-in-up delay-100">
               <h3 className="text-2xl font-semibold mb-4 text-gray-800">2025</h3>
               <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
-                <li>The library of borrowed Hearts, Lucy G</li>
+                <li>The library of borrowed hearts, Lucy G</li>
               </ul>
             </div>
             <div className="animate-fade-in-up delay-200">
               <h3 className="text-2xl font-semibold mb-4 text-gray-800">2024</h3>
               <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
-                <li>How to Stop Time, Matt Haig</li>
+                <li>How to stop time, Matt Haig</li>
                 <li>The Kite Runner, Khaled Hosseini</li>
               </ul>
             </div>
