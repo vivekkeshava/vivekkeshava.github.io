@@ -227,10 +227,6 @@ export default function Portfolio() {
                       variant="outline"
                       className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105"
                     >
-                      <Link href="tel:602-815-9913">
-                        <Phone className="w-4 h-4 mr-2" />
-                        Call
-                      </Link>
                     </Button>
                   </div>
                 </div>
