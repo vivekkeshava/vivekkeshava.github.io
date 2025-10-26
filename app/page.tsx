@@ -679,23 +679,16 @@ export default function Portfolio() {
       <section id="resources" className="py-16 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <div className="animate-fade-in-up">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Books I've Read</h2>
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Book Recommendations</h2>
           </div>
           <div className="max-w-2xl mx-auto space-y-8">
             <div className="animate-fade-in-up delay-100">
-              <h3 className="text-2xl font-semibold mb-4 text-gray-800">2025</h3>
               <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
                 <li>The library of borrowed hearts, Lucy G</li>
-              </ul>
-            </div>
-            <div className="animate-fade-in-up delay-200">
-              <h3 className="text-2xl font-semibold mb-4 text-gray-800">2024</h3>
-              <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
                 <li>How to stop time, Matt Haig</li>
                 <li>The Kite Runner, Khaled Hosseini</li>
               </ul>
             </div>
-            {/* Add more years and books as needed */}
           </div>
         </div>
       </section>
