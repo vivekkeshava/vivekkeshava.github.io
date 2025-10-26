@@ -186,7 +186,7 @@ export default function Portfolio() {
                 <div className="animate-fade-in-up delay-200">
                   <p className="text-lg mb-8 max-w-2xl mx-auto lg:mx-0 text-gray-200 leading-relaxed">
                     Passionate software engineer with expertise in microservices, cloud technologies, and scalable
-                    applications. Currently building used car marketplace at Credit Acceptance Corporation.
+                    applications. Currently working on building B2C services at scale.
                   </p>
                 </div>
 
