@@ -270,24 +270,26 @@ export default function Portfolio() {
                 <CardContent>
                   <ul className="space-y-2 text-gray-700">
                     <li>
-                      • Spearheaded development of scalable, full stack applications using microservices architecture,
-                      using Kubernetes & Helm for container orchestration
+                      • Architected and delivered scalable, cloud-native applications using microservices with
+                      Kubernetes & Helm, deploying on AWS EKS with S3 and Lambda, achieving 99.9% uptime and reducing
+                      deployment cycles by 25% through CI/CD automation.
                     </li>
                     <li>
-                      • Engineered and maintained Apollo GraphQL-based microservices with NestJS, including an
-                      end-to-end payment service using GraphQL federation
+                      • Designed, developed, and optimized Apollo GraphQL microservices with NestJS, including an 
+                      end-to-end payment platform via GraphQL federation, and devised high throughput gRPC and REST APIs
+                      to third-party vendors, supporting transactions at scale.
                     </li>
                     <li>
-                      • Developed authentication & authorization features & deployed the containerized services on AWS
-                      EKS & also used S3, lambda services extensively
+                      • Led enterprise-scale migration from gRPC + Micronaut to REST + Spring Boot WebFlux, re-engineering
+                      backend for asynchronous, non-blocking processing, improving request throughput by 30% & reduce latency by 20%
                     </li>
                     <li>
-                      • Built scalable gRPC and REST API services using GraphQL federation model for payments services
-                      to third party vendors
+                      • Implemented high-visibility features such as a dealer-specific custom subdomain framework, AWS SQS-powered
+                      SMS notification system, and Dealer-Center integration, cutting manual dealer processing time by 40% and improving customer adoption
                     </li>
                     <li>
-                      • Designed and implemented custom token-based authentication system (OAUTH) for Guest payment
-                      which is scalable and secure
+                      • Engineered secure authentication and authorization solutions, including a custom OAuth-based token
+                      system for guest payments, enabling secure, scalable access for thousands of daily transactions without downtime
                     </li>
                   </ul>
                 </CardContent>
@@ -312,16 +314,17 @@ export default function Portfolio() {
                 <CardContent>
                   <ul className="space-y-2 text-gray-700">
                     <li>
-                      • Led the development of 5 features for the team on microservices and cloud-based deployments,
-                      resulting in a <strong>15% reduction in development time</strong>
+                      • Constructed and deployed reusable data streaming architectures using Apache Kafka and Apache
+                      Pulsar across 5 products, improving data throughput 30% and reducing development cycle time 20%
                     </li>
                     <li>
-                      • Provided technical support to customer-facing teams worldwide for new features, resulting in a{" "}
-                      <strong>20% reduction in total defect escalations</strong>
+                      • Developed and integrated high-performance REST APIs for NNMi backend to process data from 100+ devices
+                      (XML/JSON), reducing analysis time 25% and powering dashboards for 500+ customers, increasing
+                      satisfaction 40% and cutting support requests 30%
                     </li>
                     <li>
-                      • Resolved critical issues for global customers within 24 hours, resulting in a{" "}
-                      <strong>50% reduction in downtime</strong>
+                      • Diagnosed and resolved critical global customer issues within 24 hours, reducing downtime by 50% and
+                      defect escalations by 20%, while following Scrum, Agile, and TDD best practices
                     </li>
                     <li>
                       • Architected and migrated the on-premises NOM product to the AWS cloud platform, involving a team
