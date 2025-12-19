@@ -6,7 +6,7 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Vivek Keshava - Software Engineer Portfolio",
+  title: "Vivek Keshava",
   description:
     "Vivek Keshava's personal portfolio showcasing work experience, technical skills, projects, and publications in software engineering and cloud architecture.",
   keywords: [
@@ -24,11 +24,11 @@ export const metadata: Metadata = {
     "Java",
   ],
   openGraph: {
-    title: "Vivek Keshava - Software Engineer Portfolio",
+    title: "Vivek Keshava",
     description:
       "Vivek Keshava's personal portfolio showcasing work experience, technical skills, projects, and publications.",
-    url: "https://vivekkeshava.vercel.app/", // Replace with your actual deployed URL
-    siteName: "Vivek Keshava Portfolio",
+    url: "https://vivekkeshava.com", // Replace with your actual deployed URL
+    siteName: "Vivek Keshava",
     images: [
       {
         url: "/images/vivek-profile.png", // Ensure this path is correct and image exists
