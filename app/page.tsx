@@ -306,7 +306,7 @@ export default function Portfolio() {
                       <Calendar className="w-4 h-4" />
                       <span>December 2025 - Current</span>
                       <MapPin className="w-4 h-4 ml-2" />
-                      <span>Michigan, USA (Remote)</span>
+                      <span>Phoenix, USA (Remote)</span>
                     </div>
                   </div>
                 </CardHeader>
@@ -314,8 +314,8 @@ export default function Portfolio() {
                   <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                     <li>
                       • Instrumental in delivering a full-scale credit application, driving efficient and reliable leads.
-                      Led the team in delivering a used car marketplace by handling end-to-end features and coordinating
-                      between different stakeholders.
+                      Played a key role in delivering a used car marketplace by developing end-to-end features and working 
+                      closely with relevant stakeholders.
                     </li>
                     <li>
                       • Designed and delivered high-impact backend features, including asynchronous notification services
@@ -353,7 +353,7 @@ export default function Portfolio() {
                       <Calendar className="w-4 h-4" />
                       <span>January 2024 - December 2025</span>
                       <MapPin className="w-4 h-4 ml-2" />
-                      <span>Michigan, USA (Remote)</span>
+                      <span>Phoenix, USA (Remote)</span>
                     </div>
                   </div>
                 </CardHeader>
