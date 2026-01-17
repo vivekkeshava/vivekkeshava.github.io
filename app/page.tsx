@@ -7,7 +7,6 @@ import {
   Github,
   Linkedin,
   Mail,
-  Phone,
   MapPin,
   ExternalLink,
   Calendar,
@@ -19,15 +18,21 @@ import {
   Globe,
   Menu,
   X,
+  Moon,
+  Sun,
 } from "lucide-react"
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import Image from "next/image"
+import { useTheme } from "next-themes"
 
 export default function Portfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("")
   const [isScrolled, setIsScrolled] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const { theme, setTheme } = useTheme()
+  const lastScrollTime = useRef(0)
 
   const navItems = [
     { name: "About", href: "#about" },
@@ -40,29 +45,39 @@ export default function Portfolio() {
     { name: "Contact", href: "#contact" },
   ]
 
+  // Mount check for theme hydration
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-
-      // Update active section based on scroll position
-      const sections = navItems.map((item) => item.href.substring(1))
-      const currentSection = sections.find((section) => {
-        const element = document.getElementById(section)
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          return rect.top <= 100 && rect.bottom >= 100
-        }
-        return false
-      })
-
-      if (currentSection) {
-        setActiveSection(currentSection)
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    setMounted(true)
   }, [])
+
+  // Throttled scroll handler for better performance
+  const handleScroll = useCallback(() => {
+    const now = Date.now()
+    if (now - lastScrollTime.current < 50) return // Throttle to 50ms
+    lastScrollTime.current = now
+
+    setIsScrolled(window.scrollY > 50)
+
+    // Update active section based on scroll position
+    const sections = navItems.map((item) => item.href.substring(1))
+    const currentSection = sections.find((section) => {
+      const element = document.getElementById(section)
+      if (element) {
+        const rect = element.getBoundingClientRect()
+        return rect.top <= 100 && rect.bottom >= 100
+      }
+      return false
+    })
+
+    if (currentSection) {
+      setActiveSection(currentSection)
+    }
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [handleScroll])
 
   const scrollToSection = (href: string) => {
     const element = document.getElementById(href.substring(1))
@@ -73,19 +88,19 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Navigation Header */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-transparent"
+          isScrolled ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg" : "bg-transparent"
         }`}
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <div className={`font-bold text-xl ${isScrolled ? "text-gray-900" : "text-white"}`}>Vivek Keshava</div>
+            <div className={`font-bold text-xl ${isScrolled ? "text-gray-900 dark:text-white" : "text-white"}`}>Vivek Keshava</div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-8">
+            <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => (
                 <button
                   key={item.name}
@@ -93,8 +108,8 @@ export default function Portfolio() {
                   className={`text-sm font-medium transition-colors ${
                     isScrolled
                       ? activeSection === item.href.substring(1)
-                        ? "text-gray-900 border-b-2 border-gray-900 font-semibold"
-                        : "text-gray-700 hover:text-gray-900"
+                        ? "text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white font-semibold"
+                        : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
                       : activeSection === item.href.substring(1)
                         ? "text-white border-b-2 border-white font-semibold"
                         : "text-white/80 hover:text-white"
@@ -103,26 +118,54 @@ export default function Portfolio() {
                   {item.name}
                 </button>
               ))}
+              {/* Theme Toggle */}
+              {mounted && (
+                <button
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  className={`p-2 rounded-full transition-colors ${
+                    isScrolled
+                      ? "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                      : "text-white/80 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
-            <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen ? (
-                <X className={`w-6 h-6 ${isScrolled ? "text-gray-900" : "text-white"}`} />
-              ) : (
-                <Menu className={`w-6 h-6 ${isScrolled ? "text-gray-900" : "text-white"}`} />
+            <div className="flex items-center gap-2 md:hidden">
+              {/* Mobile Theme Toggle */}
+              {mounted && (
+                <button
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  className={`p-2 rounded-full transition-colors ${
+                    isScrolled
+                      ? "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                      : "text-white/80 hover:text-white"
+                  }`}
+                >
+                  {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
               )}
-            </button>
+              <button className="p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                {isMenuOpen ? (
+                  <X className={`w-6 h-6 ${isScrolled ? "text-gray-900 dark:text-white" : "text-white"}`} />
+                ) : (
+                  <Menu className={`w-6 h-6 ${isScrolled ? "text-gray-900 dark:text-white" : "text-white"}`} />
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Mobile Navigation */}
           {isMenuOpen && (
-            <div className="md:hidden bg-white border-t border-gray-200 py-4">
+            <div className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 py-4">
               {navItems.map((item) => (
                 <button
                   key={item.name}
                   onClick={() => scrollToSection(item.href)}
-                  className="block w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                  className="block w-full text-left px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
                 >
                   {item.name}
                 </button>
@@ -135,12 +178,24 @@ export default function Portfolio() {
       {/* Hero Section */}
       <section
         id="about"
-        className="relative bg-gradient-to-r from-gray-900 to-gray-800 text-white py-24 pt-40 overflow-hidden"
+        className="relative bg-gradient-to-r from-gray-900 to-gray-800 text-white py-16 md:py-24 pt-28 md:pt-36 overflow-hidden"
       >
-        {/* Animated Background Elements */}
+        {/* Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          {/* Gradient orbs */}
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-full blur-2xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-full blur-2xl"></div>
+
+          {/* Floating code symbols */}
+          <div className="absolute top-20 left-[10%] text-4xl text-white/20 code-symbol animate-float">&lt;/&gt;</div>
+          <div className="absolute top-40 right-[15%] text-3xl text-white/20 code-symbol animate-float-reverse delay-200">&#123;&#125;</div>
+          <div className="absolute bottom-32 left-[20%] text-2xl text-white/15 code-symbol animate-float-slow delay-300">( )</div>
+          <div className="absolute top-1/3 left-[5%] text-xl text-white/15 code-symbol animate-float delay-400">//</div>
+          <div className="absolute bottom-20 right-[10%] text-3xl text-white/20 code-symbol animate-float-reverse">[ ]</div>
+          <div className="absolute top-1/2 right-[5%] text-2xl text-white/15 code-symbol animate-float-slow delay-100">=&gt;</div>
+          <div className="absolute bottom-1/3 left-[8%] text-xl text-white/15 code-symbol animate-float-reverse delay-300">/**</div>
+          <div className="absolute top-24 left-[40%] text-lg text-white/10 code-symbol animate-float delay-200">const</div>
+          <div className="absolute bottom-40 right-[25%] text-lg text-white/10 code-symbol animate-float-slow">async</div>
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -149,18 +204,16 @@ export default function Portfolio() {
               {/* Profile Image - Left Side */}
               <div className="animate-fade-in-up delay-300 flex-shrink-0">
                 <div className="relative">
-                  <div className="w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl backdrop-blur-sm">
+                  <div className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl backdrop-blur-sm">
                     <Image
                       src="/images/vivek-profile.png"
                       alt="Vivek Keshava - Software Engineer"
                       width={350}
                       height={350}
-                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                       priority
                     />
                   </div>
-                  {/* Decorative ring */}
-                  <div className="absolute inset-0 rounded-full border-2 border-white/10 animate-pulse"></div>
                   {/* Glow effect */}
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-cyan-500/20 blur-xl -z-10"></div>
                 </div>
@@ -172,7 +225,7 @@ export default function Portfolio() {
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white">Vivek Keshava</h1>
                   <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-6">
                     <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium text-white border border-white/30">
-                      Software Engineer II
+                      Senior Software Engineer
                     </span>
                     <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium text-white border border-white/30">
                       Full-Stack Developer
@@ -195,7 +248,7 @@ export default function Portfolio() {
                     <Button
                       asChild
                       variant="outline"
-                      className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105"
+                      className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white hover:text-gray-900 transition-all duration-200 hover:scale-[1.02]"
                     >
                       <Link href="https://github.com/vivekkeshava" target="_blank">
                         <Github className="w-4 h-4 mr-2" />
@@ -205,7 +258,7 @@ export default function Portfolio() {
                     <Button
                       asChild
                       variant="outline"
-                      className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105"
+                      className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white hover:text-gray-900 transition-all duration-200 hover:scale-[1.02]"
                     >
                       <Link href="http://www.linkedin.com/in/vivekkeshava" target="_blank">
                         <Linkedin className="w-4 h-4 mr-2" />
@@ -215,18 +268,12 @@ export default function Portfolio() {
                     <Button
                       asChild
                       variant="outline"
-                      className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105"
+                      className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white hover:text-gray-900 transition-all duration-200 hover:scale-[1.02]"
                     >
                       <Link href="mailto:vivek.keshava1@gmail.com">
                         <Mail className="w-4 h-4 mr-2" />
                         Email
                       </Link>
-                    </Button>
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105"
-                    >
                     </Button>
                   </div>
                 </div>
@@ -237,41 +284,88 @@ export default function Portfolio() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-16 scroll-mt-16">
+      <section id="experience" className="py-16 scroll-mt-20">
         {/* rest of code here */}
         <div className="container mx-auto px-4">
           <div className="animate-fade-in-up">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Work Experience</h2>
+            <h2 className="text-2xl md:text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white dark:text-white">Work Experience</h2>
           </div>
           <div className="max-w-4xl mx-auto space-y-8">
             {/* Current Role */}
             <div className="animate-slide-in-left">
-              <Card className="border-l-4 border-l-green-500 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+              <Card className="border-l-4 border-l-blue-500 hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <div>
-                      <CardTitle className="text-xl">Software Engineer II</CardTitle>
-                      <CardDescription className="text-lg font-medium text-gray-700">
+                      <CardTitle className="text-xl">Senior Software Engineer</CardTitle>
+                      <CardDescription className="text-lg font-medium text-gray-700 dark:text-gray-300">
                         Credit Acceptance Corporation
                       </CardDescription>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                       <Calendar className="w-4 h-4" />
-                      <span>January 2024 - Current</span>
+                      <span>December 2025 - Current</span>
                       <MapPin className="w-4 h-4 ml-2" />
                       <span>Michigan, USA (Remote)</span>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-2 text-gray-700">
+                  <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                    <li>
+                      • Instrumental in delivering a full-scale credit application, driving efficient and reliable leads.
+                      Led the team in delivering a used car marketplace by handling end-to-end features and coordinating
+                      between different stakeholders.
+                    </li>
+                    <li>
+                      • Designed and delivered high-impact backend features, including asynchronous notification services
+                      and dealer integration workflows, leveraging cloud-native architectures for reliability and performance.
+                    </li>
+                    <li>
+                      • Built concurrent, non-blocking services using reactive programming, thread pools, and async messaging
+                      to handle high-throughput workloads.
+                    </li>
+                    <li>
+                      • Introduced new features and patterns to enhance system observability and resilience; drove the adoption
+                      of modern messaging technologies and maintained rapid, reliable production deployments.
+                    </li>
+                    <li>
+                      • Designed caching strategies using in-memory and distributed caches to reduce API latency and improve
+                      throughput at scale.
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Previous Credit Acceptance Role */}
+            <div className="animate-slide-in-right">
+              <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
+                <CardHeader>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div>
+                      <CardTitle className="text-xl">Software Engineer II</CardTitle>
+                      <CardDescription className="text-lg font-medium text-gray-700 dark:text-gray-300">
+                        Credit Acceptance Corporation
+                      </CardDescription>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                      <Calendar className="w-4 h-4" />
+                      <span>January 2024 - December 2025</span>
+                      <MapPin className="w-4 h-4 ml-2" />
+                      <span>Michigan, USA (Remote)</span>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                     <li>
                       • Architected and delivered scalable, cloud-native applications using microservices with
                       Kubernetes & Helm, deploying on AWS EKS with S3 and Lambda, achieving 99.9% uptime and reducing
                       deployment cycles by 25% through CI/CD automation.
                     </li>
                     <li>
-                      • Designed, developed, and optimized Apollo GraphQL microservices with NestJS, including an 
+                      • Designed, developed, and optimized Apollo GraphQL microservices with NestJS, including an
                       end-to-end payment platform via GraphQL federation, and devised high throughput gRPC and REST APIs
                       to third-party vendors, supporting transactions at scale.
                     </li>
@@ -293,22 +387,22 @@ export default function Portfolio() {
             </div>
 
             {/* Micro Focus Roles */}
-            <div className="animate-slide-in-right">
-              <Card className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+            <div className="animate-slide-in-left">
+              <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <div>
                       <CardTitle className="text-xl">Software Engineer II</CardTitle>
-                      <CardDescription className="text-lg font-medium text-gray-700">Micro Focus</CardDescription>
+                      <CardDescription className="text-lg font-medium text-gray-700 dark:text-gray-300">Micro Focus</CardDescription>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                       <MapPin className="w-4 h-4" />
                       <span>Bengaluru, India</span>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-2 text-gray-700">
+                  <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                     <li>
                       • Constructed and deployed reusable data streaming architectures using Apache Kafka and Apache
                       Pulsar across 5 products, improving data throughput 30% and reducing development cycle time 20%
@@ -332,14 +426,14 @@ export default function Portfolio() {
               </Card>
             </div>
 
-            <div className="animate-slide-in-left">
-              <Card className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+            <div className="animate-slide-in-right">
+              <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-xl">Software Engineer I</CardTitle>
-                  <CardDescription className="text-lg font-medium text-gray-700">Micro Focus</CardDescription>
+                  <CardDescription className="text-lg font-medium text-gray-700 dark:text-gray-300">Micro Focus</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-2 text-gray-700">
+                  <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                     <li>
                       • Designed and architected reusable data streaming components and distributed system frameworks,
                       used across 5 products, resulting in a <strong>30% improvement in data processing speed</strong>
@@ -365,15 +459,15 @@ export default function Portfolio() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-16 bg-white scroll-mt-16">
+      <section id="skills" className="py-16 bg-white dark:bg-gray-900/50 scroll-mt-20">
         <div className="container mx-auto px-4">
           <div className="animate-fade-in-up">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Technical Skills</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Technical Skills</h2>
           </div>
           <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
               <div className="animate-fade-in-up delay-100">
-                <Card className="text-center hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                <Card className="text-center hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                   <CardHeader>
                     <Code className="w-8 h-8 mx-auto mb-2 text-orange-600" />
                     <CardTitle className="text-lg">Languages</CardTitle>
@@ -391,7 +485,7 @@ export default function Portfolio() {
               </div>
 
               <div className="animate-fade-in-up delay-200">
-                <Card className="text-center hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                <Card className="text-center hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                   <CardHeader>
                     <Database className="w-8 h-8 mx-auto mb-2 text-green-600" />
                     <CardTitle className="text-lg">Databases</CardTitle>
@@ -409,7 +503,7 @@ export default function Portfolio() {
               </div>
 
               <div className="animate-fade-in-up delay-300">
-                <Card className="text-center hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                <Card className="text-center hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                   <CardHeader>
                     <Cloud className="w-8 h-8 mx-auto mb-2 text-purple-600" />
                     <CardTitle className="text-lg">Cloud & DevOps</CardTitle>
@@ -427,7 +521,7 @@ export default function Portfolio() {
               </div>
 
               <div className="animate-fade-in-up delay-400">
-                <Card className="text-center hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                <Card className="text-center hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                   <CardHeader>
                     <Globe className="w-8 h-8 mx-auto mb-2 text-red-600" />
                     <CardTitle className="text-lg">Web & Frameworks</CardTitle>
@@ -449,23 +543,23 @@ export default function Portfolio() {
       </section>
 
       {/* Education Section */}
-      <section id="education" className="py-16 scroll-mt-16">
+      <section id="education" className="py-16 scroll-mt-20">
         <div className="container mx-auto px-4">
           <div className="animate-fade-in-up">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Education</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Education</h2>
           </div>
           <div className="max-w-4xl mx-auto space-y-6">
             <div className="animate-slide-in-left">
-              <Card className="border-l-4 border-l-red-500 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+              <Card className="border-l-4 border-l-blue-500 hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <div>
                       <CardTitle className="text-xl">Master of Science in Computer Science</CardTitle>
-                      <CardDescription className="text-lg font-medium text-gray-700">
+                      <CardDescription className="text-lg font-medium text-gray-700 dark:text-gray-300">
                         Arizona State University - Tempe, Arizona
                       </CardDescription>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                       <GraduationCap className="w-4 h-4" />
                       <span>December 2023</span>
                     </div>
@@ -477,7 +571,7 @@ export default function Portfolio() {
                       GPA: 4.0/4.0
                     </Badge>
                   </div>
-                  <p className="text-gray-700">
+                  <p className="text-gray-700 dark:text-gray-300">
                     <strong>Courses:</strong> Foundation of Algorithms, Database Management and System Implementation,
                     Statistical Machine Learning, Mobile Computing, Data Mining, Data Processing at Scale, Data
                     Visualization
@@ -487,16 +581,16 @@ export default function Portfolio() {
             </div>
 
             <div className="animate-slide-in-right">
-              <Card className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+              <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <div>
                       <CardTitle className="text-xl">Bachelor of Engineering, Electronics and Communication</CardTitle>
-                      <CardDescription className="text-lg font-medium text-gray-700">
+                      <CardDescription className="text-lg font-medium text-gray-700 dark:text-gray-300">
                         Sri Jayachamarajendra College of Engineering - Karnataka, India
                       </CardDescription>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                       <GraduationCap className="w-4 h-4" />
                       <span>May 2018</span>
                     </div>
@@ -508,7 +602,7 @@ export default function Portfolio() {
                       GPA: 9.08/10
                     </Badge>
                   </div>
-                  <p className="text-gray-700">
+                  <p className="text-gray-700 dark:text-gray-300">
                     <strong>Courses:</strong> Data Structures and Algorithms, Computer Concepts and C Programming,
                     Networking, Embedded Systems, Operating Systems
                   </p>
@@ -520,14 +614,14 @@ export default function Portfolio() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-16 bg-white scroll-mt-16">
+      <section id="projects" className="py-16 bg-white dark:bg-gray-900/50 scroll-mt-20">
         <div className="container mx-auto px-4">
           <div className="animate-fade-in-up">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Featured Projects</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Featured Projects</h2>
           </div>
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
+          <div className="max-w-6xl mx-auto grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <div className="animate-fade-in-up delay-100">
-              <Card className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+              <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-xl">Stance Detection on Twitter Data</CardTitle>
                   <div className="flex gap-2">
@@ -536,11 +630,11 @@ export default function Portfolio() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">
                     Engineered and trained ML models for stance detection using Twitter data with SVM, RNN, and LSTM
                     algorithms. Achieved 10% improvement in accuracy through hyperparameter optimization.
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     <strong>Technologies:</strong> Scikit-Learn, NumPy, Pandas, SVM, RNN, LSTM
                   </p>
                 </CardContent>
@@ -548,7 +642,7 @@ export default function Portfolio() {
             </div>
 
             <div className="animate-fade-in-up delay-200">
-              <Card className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+              <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-xl">Java Based RDF Database</CardTitle>
                   <div className="flex gap-2">
@@ -557,11 +651,11 @@ export default function Portfolio() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">
                     Developed an RDF Database Management System from Minibase codebase for a client with 1 million
                     records. Implemented Hash Oriented Joins for efficient data retrieval.
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     <strong>Team Size:</strong> 5 members | <strong>Duration:</strong> 4 months
                   </p>
                 </CardContent>
@@ -569,7 +663,7 @@ export default function Portfolio() {
             </div>
 
             <div className="animate-fade-in-up delay-300">
-              <Card className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+              <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-xl">Stock Prediction using ML & Sentiment Analysis</CardTitle>
                   <div className="flex gap-2">
@@ -578,11 +672,11 @@ export default function Portfolio() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">
                     Implemented binary classifiers to predict stock trends using sentiment analysis of finance news and
                     time series data. Utilized both traditional ML and deep learning methods.
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     <strong>Technologies:</strong> SVM, Random Forest, LSTM, Keras, XGBoost
                   </p>
                 </CardContent>
@@ -590,7 +684,7 @@ export default function Portfolio() {
             </div>
 
             <div className="animate-fade-in-up delay-400">
-              <Card className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+              <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-xl">Codergo - Interview Preparation Platform</CardTitle>
                   <div className="flex gap-2">
@@ -600,11 +694,11 @@ export default function Portfolio() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">
                     Created a dynamic website service that sends daily interview questionnaire mails to coding interview
                     participants. Achieved 99.9% service availability with 50% reduction in downtime.
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     <strong>Deployment:</strong> AWS ECS, Docker containers
                   </p>
                 </CardContent>
@@ -615,16 +709,16 @@ export default function Portfolio() {
       </section>
 
       {/* Publications & Achievements */}
-      <section id="publications" className="py-16 scroll-mt-16">
+      <section id="publications" className="py-16 scroll-mt-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="animate-fade-in-up">
-              <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Publications & Achievements</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Publications & Achievements</h2>
             </div>
 
             <div className="space-y-8">
               <div className="animate-slide-in-left">
-                <Card className="border-l-4 border-l-orange-500 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                <Card className="border-l-4 border-l-blue-500 hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-xl flex items-center gap-2">
                       <Award className="w-5 h-5 text-orange-600" />
@@ -654,7 +748,7 @@ export default function Portfolio() {
 
               <div className="grid md:grid-cols-1 gap-6">
                 <div className="animate-slide-in-right delay-200">
-                  <Card className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                  <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                     <CardHeader>
                       <CardTitle className="text-lg flex items-center gap-2">
                         <Award className="w-5 h-5 text-green-600" />
@@ -662,7 +756,7 @@ export default function Portfolio() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-700">
+                      <p className="text-gray-700 dark:text-gray-300">
                         Recognized as a <strong>top 20 finalist</strong> in the Texas Instruments IICDC Challenge held
                         by IIM Bangalore, from a pool of 15,000 ideas from 1,000 engineering colleges.
                       </p>
@@ -676,14 +770,14 @@ export default function Portfolio() {
       </section>
 
      {/* Resources Section */}
-      <section id="resources" className="py-16 bg-white scroll-mt-16">
+      <section id="resources" className="py-16 bg-white dark:bg-gray-900/50 scroll-mt-20">
         <div className="container mx-auto px-4">
           <div className="animate-fade-in-up">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">2025 Book Recommendations</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">2025 Book Recommendations</h2>
           </div>
           <div className="max-w-2xl mx-auto space-y-8">
             <div className="animate-fade-in-up delay-100">
-              <ul className="list-disc list-inside space-y-2 text-lg text-gray-700">
+              <ul className="list-disc list-inside space-y-2 text-lg text-gray-700 dark:text-gray-300">
                 <li>The library of borrowed hearts, Lucy G</li>
                 <li>How to stop time, Matt Haig</li>
                 <li>Atomic Habits, James Clear</li>
@@ -710,7 +804,7 @@ export default function Portfolio() {
                   asChild
                   size="lg"
                   variant="outline"
-                  className="bg-white text-gray-900 hover:bg-gray-100 transition-all duration-300 transform hover:scale-105"
+                  className="bg-white text-gray-900 hover:bg-gray-100 transition-all duration-200 hover:scale-[1.02]"
                 >
                   <Link href="mailto:vivek.keshava1@gmail.com">
                     <Mail className="w-5 h-5 mr-2" />
