@@ -241,9 +241,8 @@ export default function Portfolio() {
 
                 <div className="animate-fade-in-up delay-200">
                   <p className="text-lg mb-8 max-w-2xl mx-auto lg:mx-0 text-gray-200 leading-relaxed">
-                    I build high-throughput backend systems. Recently scaled a used-car marketplace from{" "}
-                    <strong className="text-white">2K to 1M daily users</strong>, and I'm building AI developer tooling
-                    with LLMs and the Model Context Protocol.
+                    I build high-throughput backend systems. Recently built and scaled a used-car marketplace, and I'm
+                    building AI developer tooling with LLMs and the Model Context Protocol.
                   </p>
                 </div>
 
