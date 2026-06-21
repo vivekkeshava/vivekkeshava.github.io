@@ -20,7 +20,6 @@ import {
   X,
   Moon,
   Sun,
-  BookOpen,
 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect, useCallback, useRef } from "react"
@@ -633,9 +632,9 @@ export default function Portfolio() {
           <div className="animate-fade-in-up">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Featured Projects</h2>
           </div>
-          <div className="max-w-6xl mx-auto grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          <div className="max-w-6xl mx-auto grid sm:grid-cols-1 md:grid-cols-2 auto-rows-fr gap-6 md:gap-8">
             <div className="animate-fade-in-up delay-100">
-              <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
+              <Card className="h-full hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-xl">GitHub Engineering Intelligence MCP Server</CardTitle>
                   <div className="flex gap-2">
@@ -670,7 +669,7 @@ export default function Portfolio() {
             </div>
 
             <div className="animate-fade-in-up delay-200">
-              <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
+              <Card className="h-full hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-xl">LLM-based Document Parser &amp; Authenticator</CardTitle>
                   <div className="flex gap-2">
@@ -693,7 +692,7 @@ export default function Portfolio() {
             </div>
 
             <div className="animate-fade-in-up delay-300">
-              <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
+              <Card className="h-full hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-xl">Stance Detection on Twitter Data</CardTitle>
                   <div className="flex gap-2">
@@ -715,7 +714,7 @@ export default function Portfolio() {
             </div>
 
             <div className="animate-fade-in-up delay-400">
-              <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
+              <Card className="h-full hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-xl">Bi-directional Stock Prediction</CardTitle>
                   <div className="flex gap-2">
@@ -789,18 +788,15 @@ export default function Portfolio() {
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-2 text-gray-900 dark:text-white">2025 Reading List</h2>
             <p className="text-center text-gray-600 dark:text-gray-400 mb-12">A few books I enjoyed this year</p>
           </div>
-          <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-4 md:gap-6">
-            {books.map((book, index) => (
-              <div key={book.title} className={`animate-fade-in-up delay-${(index + 1) * 100}`}>
-                <Card className="flex items-start gap-4 p-5 h-full hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
-                  <BookOpen className="w-5 h-5 mt-0.5 text-blue-500 shrink-0" />
-                  <div>
-                    <p className="font-medium text-gray-900 dark:text-white">{book.title}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{book.author}</p>
-                  </div>
-                </Card>
-              </div>
-            ))}
+          <div className="max-w-xl mx-auto animate-fade-in-up delay-100">
+            <ul className="space-y-3">
+              {books.map((book) => (
+                <li key={book.title} className="text-gray-700 dark:text-gray-300">
+                  <span className="font-medium text-gray-900 dark:text-white">{book.title}</span>
+                  <span className="text-gray-500 dark:text-gray-400"> — {book.author}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
