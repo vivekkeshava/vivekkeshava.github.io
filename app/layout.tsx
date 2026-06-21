@@ -7,6 +7,7 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://vivekkeshava.com"),
   title: "Vivek Keshava",
   description:
     "Vivek Keshava's personal portfolio showcasing work experience, technical skills, projects, and publications in software engineering and cloud architecture.",
@@ -28,13 +29,13 @@ export const metadata: Metadata = {
     title: "Vivek Keshava",
     description:
       "Vivek Keshava's personal portfolio showcasing work experience, technical skills, projects, and publications.",
-    url: "https://vivekkeshava.com", // Replace with your actual deployed URL
+    url: "https://vivekkeshava.com",
     siteName: "Vivek Keshava",
     images: [
       {
-        url: "/images/vivek-profile.png", // Ensure this path is correct and image exists
-        width: 800,
-        height: 600,
+        url: "/images/vivek-profile.jpg",
+        width: 600,
+        height: 553,
         alt: "Vivek Keshava Profile",
       },
     ],
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
     title: "Vivek Keshava - Software Engineer Portfolio",
     description:
       "Vivek Keshava's personal portfolio showcasing work experience, technical skills, projects, and publications.",
-    images: ["/images/vivek-profile.png"], // Ensure this path is correct and image exists
+    images: ["/images/vivek-profile.jpg"],
   },
 }
 
