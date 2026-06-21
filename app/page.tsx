@@ -191,7 +191,7 @@ export default function Portfolio() {
 
       {/* Hero Section */}
       <section
-        id="about"
+        id="home"
         className="relative bg-gradient-to-r from-gray-900 to-gray-800 text-white py-16 md:py-24 pt-28 md:pt-36 overflow-hidden"
       >
         {/* Background Elements */}
@@ -199,17 +199,6 @@ export default function Portfolio() {
           {/* Gradient orbs */}
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-full blur-2xl"></div>
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-full blur-2xl"></div>
-
-          {/* Floating code symbols */}
-          <div className="absolute top-20 left-[10%] text-4xl text-white/20 code-symbol animate-float">&lt;/&gt;</div>
-          <div className="absolute top-40 right-[15%] text-3xl text-white/20 code-symbol animate-float-reverse delay-200">&#123;&#125;</div>
-          <div className="absolute bottom-32 left-[20%] text-2xl text-white/15 code-symbol animate-float-slow delay-300">( )</div>
-          <div className="absolute top-1/3 left-[5%] text-xl text-white/15 code-symbol animate-float delay-400">//</div>
-          <div className="absolute bottom-20 right-[10%] text-3xl text-white/20 code-symbol animate-float-reverse">[ ]</div>
-          <div className="absolute top-1/2 right-[5%] text-2xl text-white/15 code-symbol animate-float-slow delay-100">=&gt;</div>
-          <div className="absolute bottom-1/3 left-[8%] text-xl text-white/15 code-symbol animate-float-reverse delay-300">/**</div>
-          <div className="absolute top-24 left-[40%] text-lg text-white/10 code-symbol animate-float delay-200">const</div>
-          <div className="absolute bottom-40 right-[25%] text-lg text-white/10 code-symbol animate-float-slow">async</div>
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -242,18 +231,19 @@ export default function Portfolio() {
                       Senior Software Engineer
                     </span>
                     <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium text-white border border-white/30">
-                      Full-Stack Developer
+                      Distributed Systems
                     </span>
                     <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium text-white border border-white/30">
-                      Cloud Architect
+                      AI Tooling
                     </span>
                   </div>
                 </div>
 
                 <div className="animate-fade-in-up delay-200">
                   <p className="text-lg mb-8 max-w-2xl mx-auto lg:mx-0 text-gray-200 leading-relaxed">
-                    Passionate software engineer with expertise in microservices, cloud technologies, and scalable
-                    applications. Currently working on building B2C services at scale.
+                    I build high-throughput backend systems. Recently scaled a used-car marketplace from{" "}
+                    <strong className="text-white">2K to 1M daily users</strong>, and I'm building AI developer tooling
+                    with LLMs and the Model Context Protocol.
                   </p>
                 </div>
 
@@ -297,6 +287,28 @@ export default function Portfolio() {
         </div>
       </section>
 
+      {/* About Section */}
+      <section id="about" className="py-16 bg-white dark:bg-gray-900/50 scroll-mt-20">
+        <div className="container mx-auto px-4">
+          <div className="animate-fade-in-up">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">About</h2>
+          </div>
+          <div className="max-w-3xl mx-auto animate-fade-in-up delay-100 space-y-4 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+            <p>
+              I'm a senior software engineer with 5+ years designing high-throughput backend systems, with a focus on
+              system design, reliability, and performance at scale. Most of my work lives in event-driven microservices
+              and distributed platforms built with reactive Java, Apache Kafka, AWS, and Kubernetes.
+            </p>
+            <p>
+              At Credit Acceptance I led the architecture of a used-car marketplace that grew from 2,000 to over a
+              million daily users, owning everything from credit-application workflows to async notification
+              infrastructure handling 1M+ daily deliveries. Lately I've been building AI-powered developer tooling using
+              LLMs and the Model Context Protocol.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Experience Section */}
       <section id="experience" className="py-16 scroll-mt-20">
         <div className="container mx-auto px-4">
@@ -326,25 +338,17 @@ export default function Portfolio() {
                 <CardContent>
                   <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                     <li>
-                      • Instrumental in delivering a full-scale credit application, driving efficient and reliable leads.
-                      Played a key role in delivering a used car marketplace by developing end-to-end features and working 
-                      closely with relevant stakeholders.
+                      • Led end-to-end architecture of a high-traffic used-car marketplace, scaling from 2,000 to{" "}
+                      <strong>1,000,000 daily users</strong> across credit-application workflows.
                     </li>
                     <li>
-                      • Designed and delivered high-impact backend features, including asynchronous notification services
-                      and dealer integration workflows, leveraging cloud-native architectures for reliability and performance.
+                      • Designed a Redis cache-aside strategy with TTL-based invalidation across high-traffic read paths,
+                      cutting <strong>P95 API latency by ~35%</strong>; built concurrent, non-blocking services with
+                      Spring WebFlux across 12+ microservices.
                     </li>
                     <li>
-                      • Built concurrent, non-blocking services using reactive programming, thread pools, and async messaging
-                      to handle high-throughput workloads.
-                    </li>
-                    <li>
-                      • Introduced new features and patterns to enhance system observability and resilience; drove the adoption
-                      of modern messaging technologies and maintained rapid, reliable production deployments.
-                    </li>
-                    <li>
-                      • Designed caching strategies using in-memory and distributed caches to reduce API latency and improve
-                      throughput at scale.
+                      • Designed and delivered asynchronous notification services on AWS handling{" "}
+                      <strong>1M+ daily deliveries</strong> with ~40% latency reduction.
                     </li>
                   </ul>
                 </CardContent>
@@ -373,26 +377,18 @@ export default function Portfolio() {
                 <CardContent>
                   <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                     <li>
-                      • Architected and delivered scalable, cloud-native applications using microservices with
-                      Kubernetes & Helm, deploying on AWS EKS with S3 and Lambda, achieving 99.9% uptime and reducing
-                      deployment cycles by 25% through CI/CD automation.
+                      • Led a <strong>zero-downtime migration</strong> from gRPC + Micronaut to REST + Spring Boot
+                      WebFlux across 8 interdependent services under live traffic, improving throughput 30% and cutting
+                      P50 latency 20%.
                     </li>
                     <li>
-                      • Designed, developed, and optimized Apollo GraphQL microservices with NestJS, including an
-                      end-to-end payment platform via GraphQL federation, and devised high throughput gRPC and REST APIs
-                      to third-party vendors, supporting transactions at scale.
+                      • Architected cloud-native microservices on Kubernetes & Helm (AWS EKS, S3, Lambda), achieving{" "}
+                      <strong>99.9% uptime</strong> and reducing deployment cycles 25% through CI/CD automation.
                     </li>
                     <li>
-                      • Led enterprise-scale migration from gRPC + Micronaut to REST + Spring Boot WebFlux, re-engineering
-                      backend for asynchronous, non-blocking processing, improving request throughput by 30% & reduce latency by 20%
-                    </li>
-                    <li>
-                      • Implemented high-visibility features such as a dealer-specific custom subdomain framework, AWS SQS-powered
-                      SMS notification system, and Dealer-Center integration, cutting manual dealer processing time by 40% and improving customer adoption
-                    </li>
-                    <li>
-                      • Engineered secure authentication and authorization solutions, including a custom OAuth-based token
-                      system for guest payments, enabling secure, scalable access for thousands of daily transactions without downtime
+                      • Built an end-to-end payment platform with Apollo GraphQL federation (NestJS) and a custom OAuth
+                      2.0 token system for guest payments, supporting thousands of daily transactions with zero auth
+                      downtime.
                     </li>
                   </ul>
                 </CardContent>
@@ -417,22 +413,16 @@ export default function Portfolio() {
                 <CardContent>
                   <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                     <li>
-                      • Constructed and deployed reusable data streaming architectures using Apache Kafka and Apache
-                      Pulsar across 5 products, improving data throughput 30% and reducing development cycle time 20%
+                      • Architected reusable data streaming pipelines with Apache Kafka and Apache Pulsar across 5
+                      products, improving throughput <strong>30%</strong> and reducing development cycle time 20%.
                     </li>
                     <li>
-                      • Developed and integrated high-performance REST APIs for NNMi backend to process data from 100+ devices
-                      (XML/JSON), reducing analysis time 25% and powering dashboards for 500+ customers, increasing
-                      satisfaction 40% and cutting support requests 30%
+                      • Developed high-performance REST APIs for the NNMi backend processing data from 100+ network
+                      devices, powering monitoring dashboards for <strong>500+ enterprise customers</strong>.
                     </li>
                     <li>
-                      • Diagnosed and resolved critical global customer issues within 24 hours, reducing downtime by 50% and
-                      defect escalations by 20%, while following Scrum, Agile, and TDD best practices
-                    </li>
-                    <li>
-                      • Architected and migrated the on-premises NOM product to the AWS cloud platform, involving a team
-                      of 7 members and completed within 3 months, resulting in a{" "}
-                      <strong>40% reduction in operational costs</strong>
+                      • Architected and migrated the on-premises NOM product to AWS with a 7-member team in 3 months,
+                      resulting in a <strong>40% reduction in operational costs</strong>.
                     </li>
                   </ul>
                 </CardContent>
@@ -448,20 +438,16 @@ export default function Portfolio() {
                 <CardContent>
                   <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                     <li>
-                      • Designed and architected reusable data streaming components and distributed system frameworks,
-                      used across 5 products, resulting in a <strong>30% improvement in data processing speed</strong>
+                      • Designed reusable data streaming components and distributed system frameworks used across 5
+                      products, improving data processing speed <strong>30%</strong>.
                     </li>
                     <li>
-                      • Developed multiple REST APIs for the backend framework of NNMi product, enabling analytics on
-                      network data from 100+ devices
+                      • Developed multiple REST APIs for the NNMi backend framework, enabling analytics on network data
+                      from 100+ devices.
                     </li>
                     <li>
-                      • Successfully completed 3 POC projects, including migration to new Hibernate versions and
-                      exploring performance monitoring solutions
-                    </li>
-                    <li>
-                      • Built web applications and web services utilized by <strong>500+ customers worldwide</strong>,
-                      resulting in a 40% increase in customer satisfaction
+                      • Built web applications and services used by <strong>500+ customers worldwide</strong>, increasing
+                      customer satisfaction 40%.
                     </li>
                   </ul>
                 </CardContent>
