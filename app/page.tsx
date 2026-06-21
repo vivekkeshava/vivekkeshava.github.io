@@ -20,6 +20,7 @@ import {
   X,
   Moon,
   Sun,
+  BookOpen,
 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect, useCallback, useRef } from "react"
@@ -43,6 +44,13 @@ export default function Portfolio() {
     { name: "Publications", href: "#publications" },
     { name: "Reading", href: "#resources" },
     { name: "Contact", href: "#contact" },
+  ]
+
+  const books = [
+    { title: "The Library of Borrowed Hearts", author: "Lucy Gilmore" },
+    { title: "How to Stop Time", author: "Matt Haig" },
+    { title: "Atomic Habits", author: "James Clear" },
+    { title: "The Kite Runner", author: "Khaled Hosseini" },
   ]
 
   // Mount check for theme hydration
@@ -629,20 +637,34 @@ export default function Portfolio() {
             <div className="animate-fade-in-up delay-100">
               <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-xl">Stance Detection on Twitter Data</CardTitle>
+                  <CardTitle className="text-xl">GitHub Engineering Intelligence MCP Server</CardTitle>
                   <div className="flex gap-2">
-                    <Badge variant="outline">Python</Badge>
-                    <Badge variant="outline">Machine Learning</Badge>
+                    <Badge variant="outline">TypeScript</Badge>
+                    <Badge variant="outline">MCP</Badge>
+                    <Badge variant="outline">LLMs</Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-700 dark:text-gray-300 mb-4">
-                    Engineered and trained ML models for stance detection using Twitter data with SVM, RNN, and LSTM
-                    algorithms. Achieved 10% improvement in accuracy through hyperparameter optimization.
+                    Production-ready MCP server built with the TypeScript MCP SDK, Zod validation, and the GitHub REST
+                    API, exposing repository intelligence as structured tools for AI agents and LLMs. Implements repo
+                    health scoring, PR risk classification, and workflow bottleneck detection — deployed as a live
+                    integration in Claude's ecosystem.
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    <strong>Technologies:</strong> Scikit-Learn, NumPy, Pandas, SVM, RNN, LSTM
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    <strong>Technologies:</strong> MCP SDK, GitHub REST API, Zod, TypeScript, Python
                   </p>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="hover:scale-105 transition-transform bg-transparent"
+                  >
+                    <Link href="https://github.com/vivekkeshava" target="_blank">
+                      <Github className="w-4 h-4 mr-2" />
+                      View on GitHub
+                    </Link>
+                  </Button>
                 </CardContent>
               </Card>
             </div>
@@ -650,19 +672,21 @@ export default function Portfolio() {
             <div className="animate-fade-in-up delay-200">
               <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-xl">Java Based RDF Database</CardTitle>
+                  <CardTitle className="text-xl">LLM-based Document Parser &amp; Authenticator</CardTitle>
                   <div className="flex gap-2">
-                    <Badge variant="outline">Java</Badge>
-                    <Badge variant="outline">Database</Badge>
+                    <Badge variant="outline">Python</Badge>
+                    <Badge variant="outline">LLMs</Badge>
+                    <Badge variant="outline">React</Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-700 dark:text-gray-300 mb-4">
-                    Developed an RDF Database Management System from Minibase codebase for a client with 1 million
-                    records. Implemented Hash Oriented Joins for efficient data retrieval.
+                    LLM-powered parser that extracts structured data from unstructured text, validates authenticity, and
+                    flags anomalies with over 90% accuracy. Integrated open-source models (Llama, DeepSeek) for
+                    extraction and accuracy scoring, cutting manual verification by 60%.
                   </p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    <strong>Team Size:</strong> 5 members | <strong>Duration:</strong> 4 months
+                    <strong>Technologies:</strong> Llama, DeepSeek, Python, TypeScript, React
                   </p>
                 </CardContent>
               </Card>
@@ -671,19 +695,20 @@ export default function Portfolio() {
             <div className="animate-fade-in-up delay-300">
               <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-xl">Stock Prediction using ML & Sentiment Analysis</CardTitle>
+                  <CardTitle className="text-xl">Stance Detection on Twitter Data</CardTitle>
                   <div className="flex gap-2">
                     <Badge variant="outline">Python</Badge>
-                    <Badge variant="outline">Deep Learning</Badge>
+                    <Badge variant="outline">Machine Learning</Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-700 dark:text-gray-300 mb-4">
-                    Implemented binary classifiers to predict stock trends using sentiment analysis of finance news and
-                    time series data. Utilized both traditional ML and deep learning methods.
+                    Engineered and trained ML models for stance detection on Twitter data using SVM, RNN, and LSTM to
+                    classify a reply's position relative to the source tweet. Achieved a 10% accuracy improvement through
+                    hyperparameter tuning.
                   </p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    <strong>Technologies:</strong> SVM, Random Forest, LSTM, Keras, XGBoost
+                    <strong>Technologies:</strong> Scikit-Learn, NumPy, Pandas, SVM, RNN, LSTM
                   </p>
                 </CardContent>
               </Card>
@@ -692,24 +717,25 @@ export default function Portfolio() {
             <div className="animate-fade-in-up delay-400">
               <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-xl">Codergo - Interview Preparation Platform</CardTitle>
+                  <CardTitle className="text-xl">Bi-directional Stock Prediction</CardTitle>
                   <div className="flex gap-2">
-                    <Badge variant="outline">Java</Badge>
-                    <Badge variant="outline">JavaScript</Badge>
-                    <Badge variant="outline">AWS</Badge>
+                    <Badge variant="outline">Python</Badge>
+                    <Badge variant="outline">Deep Learning</Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-700 dark:text-gray-300 mb-4">
-                    Created a dynamic website service that sends daily interview questionnaire mails to coding interview
-                    participants. Achieved 99.9% service availability with 50% reduction in downtime.
+                    Binary classifiers that predict stock trends from sentiment analysis of finance news and time-series
+                    market data. Benchmarked traditional ML (SVM, random forest, logistic regression) against deep
+                    learning (LSTM, XGBoost) with feature selection and grid-search tuning.
                   </p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    <strong>Deployment:</strong> AWS ECS, Docker containers
+                    <strong>Technologies:</strong> Keras, XGBoost, LSTM, Scikit-Learn
                   </p>
                 </CardContent>
               </Card>
             </div>
+
           </div>
         </div>
       </section>
@@ -719,7 +745,7 @@ export default function Portfolio() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="animate-fade-in-up">
-              <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Publications & Achievements</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Publications</h2>
             </div>
 
             <div className="space-y-8">
@@ -751,45 +777,30 @@ export default function Portfolio() {
                   </CardContent>
                 </Card>
               </div>
-
-              <div className="grid md:grid-cols-1 gap-6">
-                <div className="animate-slide-in-right delay-200">
-                  <Card className="hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <Award className="w-5 h-5 text-green-600" />
-                        Competition Recognition
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-700 dark:text-gray-300">
-                        Recognized as a <strong>top 20 finalist</strong> in the Texas Instruments IICDC Challenge held
-                        by IIM Bangalore, from a pool of 15,000 ideas from 1,000 engineering colleges.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-     {/* Resources Section */}
+      {/* Reading Section */}
       <section id="resources" className="py-16 bg-white dark:bg-gray-900/50 scroll-mt-20">
         <div className="container mx-auto px-4">
           <div className="animate-fade-in-up">
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">2025 Book Recommendations</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-2 text-gray-900 dark:text-white">2025 Reading List</h2>
+            <p className="text-center text-gray-600 dark:text-gray-400 mb-12">A few books I enjoyed this year</p>
           </div>
-          <div className="max-w-2xl mx-auto space-y-8">
-            <div className="animate-fade-in-up delay-100">
-              <ul className="list-disc list-inside space-y-2 text-lg text-gray-700 dark:text-gray-300">
-                <li>The library of borrowed hearts, Lucy G</li>
-                <li>How to stop time, Matt Haig</li>
-                <li>Atomic Habits, James Clear</li>
-                <li>The Kite Runner, Khaled Hosseini</li>
-              </ul>
-            </div>
+          <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-4 md:gap-6">
+            {books.map((book, index) => (
+              <div key={book.title} className={`animate-fade-in-up delay-${(index + 1) * 100}`}>
+                <Card className="flex items-start gap-4 p-5 h-full hover:shadow-xl dark:hover:shadow-gray-900/50 hover:-translate-y-1 transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-700">
+                  <BookOpen className="w-5 h-5 mt-0.5 text-blue-500 shrink-0" />
+                  <div>
+                    <p className="font-medium text-gray-900 dark:text-white">{book.title}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{book.author}</p>
+                  </div>
+                </Card>
+              </div>
+            ))}
           </div>
         </div>
       </section>
