@@ -41,7 +41,7 @@ export default function Portfolio() {
     { name: "Education", href: "#education" },
     { name: "Projects", href: "#projects" },
     { name: "Publications", href: "#publications" },
-    { name: "Resources", href: "#resources" },
+    { name: "Reading", href: "#resources" },
     { name: "Contact", href: "#contact" },
   ]
 
@@ -122,6 +122,7 @@ export default function Portfolio() {
               {mounted && (
                 <button
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
                   className={`p-2 rounded-full transition-colors ${
                     isScrolled
                       ? "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -139,6 +140,7 @@ export default function Portfolio() {
               {mounted && (
                 <button
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
                   className={`p-2 rounded-full transition-colors ${
                     isScrolled
                       ? "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
@@ -148,7 +150,12 @@ export default function Portfolio() {
                   {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                 </button>
               )}
-              <button className="p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              <button
+                className="p-2"
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMenuOpen}
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
                 {isMenuOpen ? (
                   <X className={`w-6 h-6 ${isScrolled ? "text-gray-900 dark:text-white" : "text-white"}`} />
                 ) : (
@@ -206,7 +213,7 @@ export default function Portfolio() {
                 <div className="relative">
                   <div className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl backdrop-blur-sm">
                     <Image
-                      src="/images/vivek-profile.png"
+                      src="/images/vivek-profile.jpg"
                       alt="Vivek Keshava - Software Engineer"
                       width={350}
                       height={350}
@@ -285,10 +292,9 @@ export default function Portfolio() {
 
       {/* Experience Section */}
       <section id="experience" className="py-16 scroll-mt-20">
-        {/* rest of code here */}
         <div className="container mx-auto px-4">
           <div className="animate-fade-in-up">
-            <h2 className="text-2xl md:text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white dark:text-white">Work Experience</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Work Experience</h2>
           </div>
           <div className="max-w-4xl mx-auto space-y-8">
             {/* Current Role */}
@@ -727,7 +733,7 @@ export default function Portfolio() {
                   </CardHeader>
                   <CardContent>
                     <h3 className="font-semibold text-lg mb-2">Robotic Mapping Using Autonomous Vehicle</h3>
-                    <p className="text-gray-700 mb-2">
+                    <p className="text-gray-700 dark:text-gray-300 mb-2">
                       Keshava, Vivek, et al. "Robotic Mapping Using Autonomous Vehicle." SN Computer Science, vol. 1,
                       no. 3, May 2020
                     </p>
