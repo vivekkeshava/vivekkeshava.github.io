@@ -188,18 +188,11 @@ const projects: {
   },
   {
     title: "llm-based-ocr",
-    tags: ["Python", "Gemini", "Gradio"],
+    tags: ["Python", "LLMs", "Gradio"],
     description:
-      "OCR that returns structure instead of raw text: sends document images (licenses, passports) to Gemini's vision model and extracts fields as JSON with per-field confidence scores. Ships a Gradio UI and a one-shot CLI, with defensive JSON parsing and env-based key management.",
-    tech: "Gemini API, Python, Gradio, Pillow",
+      "LLM-powered document parser and authenticator: extracts structured fields from document images (licenses, passports) as JSON with per-field confidence scores, validates authenticity, and flags anomalies with over 90% accuracy — cutting manual verification by 60%. Ships a Gradio UI and a one-shot CLI with defensive JSON parsing and env-based key management.",
+    tech: "Gemini API, Llama, DeepSeek, Python, Gradio",
     link: "https://github.com/vivekkeshava/LLMBasedOCR",
-  },
-  {
-    title: "llm-document-parser",
-    tags: ["Python", "LLMs", "React"],
-    description:
-      "LLM-powered parser that extracts structured data from unstructured text, validates authenticity, and flags anomalies with over 90% accuracy. Integrated open-source models (Llama, DeepSeek) for extraction and accuracy scoring, cutting manual verification by 60%.",
-    tech: "Llama, DeepSeek, Python, TypeScript, React",
   },
   {
     title: "twitter-stance-detection",
