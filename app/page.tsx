@@ -14,9 +14,12 @@ import {
   Sun,
 } from "lucide-react"
 import Link from "next/link"
-import { useState, useEffect, useCallback, useRef, type ReactNode } from "react"
+import { useState, useEffect, useCallback, useRef, type ReactNode, type KeyboardEvent } from "react"
 import Image from "next/image"
 import { useTheme } from "next-themes"
+import { posts } from "@/lib/posts"
+
+type TermEntry = { cmd: string; output: ReactNode }
 
 const navItems = [
   { name: "about", href: "#about" },
@@ -24,6 +27,7 @@ const navItems = [
   { name: "skills", href: "#skills" },
   { name: "education", href: "#education" },
   { name: "projects", href: "#projects" },
+  { name: "writing", href: "#writing" },
   { name: "publications", href: "#publications" },
   { name: "reading", href: "#resources" },
   { name: "contact", href: "#contact" },
@@ -226,7 +230,7 @@ function SectionHeading({ index, title }: { index: string; title: string }) {
 
 function WindowBar({ title }: { title: string }) {
   return (
-    <div className="flex items-center gap-2 px-4 py-2.5 border-b border-tk-border bg-tk-surface2 rounded-tk-lg">
+    <div className="flex items-center gap-2 px-4 py-2.5 border-b border-tk-border bg-tk-surface2 rounded-t-lg">
       <span className="w-3 h-3 rounded-full bg-tk-red" aria-hidden="true" />
       <span className="w-3 h-3 rounded-full bg-tk-orange" aria-hidden="true" />
       <span className="w-3 h-3 rounded-full bg-tk-green" aria-hidden="true" />
@@ -249,11 +253,208 @@ export default function Portfolio() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [typed, setTyped] = useState("")
+  const [termEntries, setTermEntries] = useState<TermEntry[]>([])
+  const [termInput, setTermInput] = useState("")
+  const [cmdHistory, setCmdHistory] = useState<string[]>([])
+  const [histIdx, setHistIdx] = useState(-1)
   const { theme, setTheme } = useTheme()
   const lastScrollTime = useRef(0)
+  const termInputRef = useRef<HTMLInputElement>(null)
+  const termScrollRef = useRef<HTMLDivElement>(null)
 
   const heroCommand = "whoami"
   const typingDone = typed === heroCommand
+
+  // Keep the newest terminal line in view
+  useEffect(() => {
+    const el = termScrollRef.current
+    if (el) el.scrollTop = el.scrollHeight
+  }, [termEntries])
+
+  const runCommand = (raw: string) => {
+    const cmd = raw.trim()
+    if (!cmd) return
+    setCmdHistory((h) => [...h, cmd])
+    setHistIdx(-1)
+    const [name, ...rest] = cmd.split(/\s+/)
+    const arg = rest.join(" ")
+    let output: ReactNode
+
+    switch (name.toLowerCase()) {
+      case "help":
+        output = (
+          <div className="space-y-0.5">
+            {[
+              ["whoami", "who am i"],
+              ["ls", "list sections"],
+              ["ls projects", "list projects"],
+              ["ls writing", "list blog posts"],
+              ["cat skills.txt", "print skills"],
+              ["open github", "open a profile (github | linkedin)"],
+              ["contact", "get in touch"],
+              ["theme", "toggle light/dark"],
+              ["clear", "clear the terminal"],
+            ].map(([c, d]) => (
+              <p key={c}>
+                <span className="text-tk-green">{c}</span>
+                <span className="text-tk-comment"> — {d}</span>
+              </p>
+            ))}
+            <p className="text-tk-comment">hint: some commands are undocumented…</p>
+          </div>
+        )
+        break
+      case "whoami":
+        output = <p>Vivek Keshava — Senior Software Engineer. Distributed systems &amp; AI tooling.</p>
+        break
+      case "pwd":
+        output = <p>/home/vivek</p>
+        break
+      case "date":
+        output = <p>{new Date().toString()}</p>
+        break
+      case "ls":
+        if (arg === "projects" || arg === "projects/") {
+          output = (
+            <div>
+              {projects.map((p) => (
+                <p key={p.title} className="text-tk-blue">
+                  {p.title}/
+                </p>
+              ))}
+            </div>
+          )
+        } else if (arg === "writing" || arg === "writing/") {
+          output = (
+            <div>
+              {posts.map((p) => (
+                <p key={p.slug}>
+                  <Link href={`/writing/${p.slug}/`} className="text-tk-blue underline hover:text-tk-green">
+                    {p.slug}.md
+                  </Link>
+                  <span className="text-tk-comment"> — {p.title}</span>
+                </p>
+              ))}
+            </div>
+          )
+        } else {
+          output = (
+            <p>
+              <span className="text-tk-blue">about/ experience/ projects/ writing/</span> skills.txt
+            </p>
+          )
+        }
+        break
+      case "cat":
+        if (arg === "skills.txt" || arg === "skills") {
+          output = (
+            <div>
+              {skillGroups.map((g) => (
+                <p key={g.file}>
+                  <span className="text-tk-purple">{g.file.replace(".ts", "")}</span>
+                  <span className="text-tk-comment">: </span>
+                  {g.skills.join(", ")}
+                </p>
+              ))}
+            </div>
+          )
+        } else {
+          output = (
+            <p className="text-tk-red">
+              cat: {arg || "<file>"}: No such file <span className="text-tk-comment">— try &apos;cat skills.txt&apos;</span>
+            </p>
+          )
+        }
+        break
+      case "open":
+        if (arg === "github") {
+          window.open("https://github.com/vivekkeshava", "_blank")
+          output = <p>opening github.com/vivekkeshava…</p>
+        } else if (arg === "linkedin") {
+          window.open("https://www.linkedin.com/in/vivekkeshava", "_blank")
+          output = <p>opening linkedin.com/in/vivekkeshava…</p>
+        } else {
+          output = (
+            <p className="text-tk-red">
+              open: unknown target <span className="text-tk-comment">— try &apos;open github&apos;</span>
+            </p>
+          )
+        }
+        break
+      case "contact":
+      case "email":
+        output = (
+          <p>
+            <a href="mailto:vivek.keshava1@gmail.com" className="text-tk-blue underline hover:text-tk-green">
+              vivek.keshava1@gmail.com
+            </a>{" "}
+            — always happy to talk.
+          </p>
+        )
+        break
+      case "theme":
+        setTheme(theme === "dark" ? "light" : "dark")
+        output = <p>theme toggled ✓</p>
+        break
+      case "echo":
+        output = <p>{arg}</p>
+        break
+      case "sudo":
+        if (arg === "hire-me" || arg === "hire me") {
+          output = (
+            <div>
+              <p className="text-tk-green">Permission granted ✓</p>
+              <p>
+                Excellent choice. →{" "}
+                <a
+                  href="mailto:vivek.keshava1@gmail.com?subject=Let%27s%20talk"
+                  className="text-tk-blue underline hover:text-tk-green"
+                >
+                  vivek.keshava1@gmail.com
+                </a>
+              </p>
+            </div>
+          )
+        } else {
+          output = <p className="text-tk-red">user is not in the sudoers file. This incident will be reported.</p>
+        }
+        break
+      case "clear":
+        setTermEntries([])
+        return
+      case "exit":
+        output = <p className="text-tk-comment">nice try. you&apos;re staying.</p>
+        break
+      default:
+        output = (
+          <p className="text-tk-red">
+            zsh: command not found: {name} <span className="text-tk-comment">— try &apos;help&apos;</span>
+          </p>
+        )
+    }
+    setTermEntries((e) => [...e, { cmd, output }])
+  }
+
+  const handleTermKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault()
+      if (cmdHistory.length === 0) return
+      const idx = histIdx === -1 ? cmdHistory.length - 1 : Math.max(0, histIdx - 1)
+      setHistIdx(idx)
+      setTermInput(cmdHistory[idx])
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault()
+      if (histIdx === -1) return
+      const idx = histIdx + 1
+      if (idx >= cmdHistory.length) {
+        setHistIdx(-1)
+        setTermInput("")
+      } else {
+        setHistIdx(idx)
+        setTermInput(cmdHistory[idx])
+      }
+    }
+  }
 
   useEffect(() => {
     setMounted(true)
@@ -398,7 +599,7 @@ export default function Portfolio() {
       <section id="home" className="relative grid-backdrop pt-28 md:pt-36 pb-16 md:pb-24 overflow-hidden">
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse 60% 50% at 50% 30%, var(--tk-glow), transparent)" }}
+          style={{ background: "radial-gradient(ellipse 60% 50% at 50% 30%, var(--t-glow), transparent)" }}
           aria-hidden="true"
         />
         <div className="container mx-auto px-4 relative z-10">
@@ -407,7 +608,11 @@ export default function Portfolio() {
             <div className="w-full flex-1 animate-fade-in-up">
               <div className="rounded-lg border border-tk-border bg-tk-surface shadow-2xl shadow-black/10 dark:shadow-black/40">
                 <WindowBar title="vivek@keshava: ~" />
-                <div className="p-5 md:p-7 font-mono text-sm md:text-base leading-relaxed">
+                <div
+                  ref={termScrollRef}
+                  onClick={() => termInputRef.current?.focus()}
+                  className="p-5 md:p-7 font-mono text-sm md:text-base leading-relaxed max-h-[30rem] overflow-y-auto cursor-text"
+                >
                   <p>
                     <span className="text-tk-green">$</span> <span className="text-tk-text">{typed}</span>
                     {!typingDone && <span className="cursor-blink text-tk-green">▊</span>}
@@ -450,6 +655,42 @@ export default function Portfolio() {
                         email
                       </Link>
                     </div>
+
+                    {/* Interactive command log */}
+                    {termEntries.map((entry, i) => (
+                      <div key={i} className="mt-4">
+                        <p>
+                          <span className="text-tk-green">$</span>{" "}
+                          <span className="text-tk-text">{entry.cmd}</span>
+                        </p>
+                        <div className="mt-1 text-tk-muted text-xs md:text-sm leading-relaxed">{entry.output}</div>
+                      </div>
+                    ))}
+
+                    {/* Prompt */}
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault()
+                        runCommand(termInput)
+                        setTermInput("")
+                      }}
+                      className="mt-5 flex items-center gap-2"
+                    >
+                      <span className="text-tk-green">$</span>
+                      <input
+                        ref={termInputRef}
+                        value={termInput}
+                        onChange={(e) => setTermInput(e.target.value)}
+                        onKeyDown={handleTermKeyDown}
+                        placeholder="type 'help'"
+                        aria-label="Terminal command input"
+                        autoComplete="off"
+                        autoCapitalize="off"
+                        spellCheck={false}
+                        className="flex-1 min-w-0 bg-transparent outline-none font-mono text-sm md:text-base text-tk-text placeholder:text-tk-comment"
+                        style={{ caretColor: "var(--t-green)" }}
+                      />
+                    </form>
                   </div>
                 </div>
               </div>
@@ -661,10 +902,39 @@ export default function Portfolio() {
         </div>
       </section>
 
+      {/* Writing */}
+      <section id="writing" className="py-16 scroll-mt-20">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <SectionHeading index="06" title="writing" />
+          <div className="space-y-5">
+            {posts.map((post, i) => (
+              <div key={post.slug} className={`animate-fade-in-up delay-${Math.min((i + 1) * 100, 400)}`}>
+                <Link
+                  href={`/writing/${post.slug}/`}
+                  className="block rounded-lg border border-tk-border bg-tk-surface p-5 md:p-6 transition-all duration-200 hover:border-tk-green hover:-translate-y-0.5"
+                >
+                  <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2">
+                    <h3 className="font-mono font-semibold text-base md:text-lg text-tk-text break-all">
+                      <span className="text-tk-muted">~/writing/</span>
+                      {post.slug}.md
+                    </h3>
+                    <span className="font-mono text-xs text-tk-muted">
+                      {post.date} · {post.readTime}
+                    </span>
+                  </div>
+                  <p className="font-medium text-tk-text mb-1.5">{post.title}</p>
+                  <p className="text-sm text-tk-muted leading-relaxed">{post.summary}</p>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Publications */}
       <section id="publications" className="py-16 scroll-mt-20">
         <div className="container mx-auto px-4 max-w-4xl">
-          <SectionHeading index="06" title="publications" />
+          <SectionHeading index="07" title="publications" />
           <div className="animate-fade-in-up rounded-lg border border-tk-border bg-tk-surface p-5 md:p-6 transition-colors hover:border-tk-purple">
             <h3 className="font-mono font-semibold text-lg text-tk-text mb-2">
               Robotic Mapping Using Autonomous Vehicle
@@ -688,7 +958,7 @@ export default function Portfolio() {
       {/* Reading */}
       <section id="resources" className="py-16 scroll-mt-20">
         <div className="container mx-auto px-4 max-w-4xl">
-          <SectionHeading index="07" title="reading" />
+          <SectionHeading index="08" title="reading" />
           <div className="animate-fade-in-up delay-100 max-w-xl">
             <div className="rounded-lg border border-tk-border bg-tk-surface">
               <WindowBar title="~/reading/2025.txt" />
@@ -736,7 +1006,7 @@ export default function Portfolio() {
       <footer className="border-t border-tk-border py-8">
         <div className="container mx-auto px-4 text-center font-mono text-xs text-tk-muted space-y-1">
           <p>
-            <span className="text-tk-comment">{"/* "}</span>© 2025 Vivek Keshava — built with Next.js + Tailwind
+            <span className="text-tk-comment">{"/* "}</span>© 2025 Vivek Keshava
             <span className="text-tk-comment">{" */"}</span>
           </p>
           <p className="text-tk-comment">exit 0</p>
