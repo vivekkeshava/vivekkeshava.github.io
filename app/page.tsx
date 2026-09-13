@@ -305,15 +305,9 @@ export default function Portfolio() {
 
     switch (name.toLowerCase()) {
       case "help":
+        // Opens a separate terminal window below; nothing is logged here
         setShowHelp((v) => !v)
-        output = showHelp ? (
-          <p className="text-tk-comment">help panel closed.</p>
-        ) : (
-          <p>
-            help panel opened below <span className="text-tk-green">↓</span>
-          </p>
-        )
-        break
+        return
       case "whoami":
         output = <p>Vivek Keshava — Senior Software Engineer. Distributed systems &amp; AI tooling.</p>
         break
@@ -323,8 +317,15 @@ export default function Portfolio() {
       case "date":
         output = <p>{new Date().toString()}</p>
         break
-      case "ls":
-        if (arg === "projects" || arg === "projects/") {
+      case "ls": {
+        const target = arg.replace(/\/$/, "")
+        if (target === "") {
+          output = (
+            <p>
+              <span className="text-tk-blue">about/ experience/ projects/ writing/</span> skills.txt
+            </p>
+          )
+        } else if (target === "projects") {
           output = (
             <div>
               {projects.map((p) => (
@@ -334,7 +335,7 @@ export default function Portfolio() {
               ))}
             </div>
           )
-        } else if (arg === "writing" || arg === "writing/") {
+        } else if (target === "writing") {
           output = (
             <div>
               {posts.map((p) => (
@@ -347,14 +348,24 @@ export default function Portfolio() {
               ))}
             </div>
           )
+        } else if (target === "about" || target === "experience") {
+          scrollToSection(`#${target}`)
+          output = <p>opening {target}/ …</p>
+        } else if (target === "skills.txt") {
+          output = (
+            <p className="text-tk-red">
+              ls: {arg}: Not a directory <span className="text-tk-comment">— try &apos;cat skills.txt&apos;</span>
+            </p>
+          )
         } else {
           output = (
-            <p>
-              <span className="text-tk-blue">about/ experience/ projects/ writing/</span> skills.txt
+            <p className="text-tk-red">
+              ls: cannot access &apos;{arg}&apos;: No such file or directory
             </p>
           )
         }
         break
+      }
       case "cat":
         if (arg === "skills.txt" || arg === "skills") {
           output = (
@@ -717,27 +728,37 @@ export default function Portfolio() {
                 </div>
               </div>
 
-              {/* Help panel */}
+              {/* Help terminal — a second terminal window spawned by `help` */}
               {showHelp && (
                 <div className="mt-4 rounded-lg border border-tk-border bg-tk-surface animate-fade-in-up shadow-2xl shadow-black/10 dark:shadow-black/40">
-                  <div className="flex items-center gap-2 px-4 py-2.5 border-b border-tk-border bg-tk-surface2 rounded-t-lg">
-                    <span className="font-mono text-xs text-tk-muted">help.txt</span>
-                    <button
-                      onClick={() => setShowHelp(false)}
-                      aria-label="Close help panel"
-                      className="ml-auto font-mono text-xs text-tk-muted hover:text-tk-red transition-colors"
-                    >
-                      [x]
-                    </button>
-                  </div>
-                  <div className="p-5 font-mono text-xs md:text-sm grid sm:grid-cols-2 gap-x-8 gap-y-1.5">
-                    {helpCommands.map(([c, d]) => (
-                      <p key={c}>
-                        <span className="text-tk-green">{c}</span>
-                        <span className="text-tk-comment"> — {d}</span>
-                      </p>
-                    ))}
-                    <p className="sm:col-span-2 text-tk-comment mt-2">hint: some commands are undocumented…</p>
+                  <WindowBar
+                    title="vivek@keshava: ~/help"
+                    right={
+                      <button
+                        onClick={() => setShowHelp(false)}
+                        aria-label="Close help terminal"
+                        className="font-mono text-xs text-tk-muted hover:text-tk-red transition-colors"
+                      >
+                        [x]
+                      </button>
+                    }
+                  />
+                  <div className="p-5 md:p-6 font-mono text-xs md:text-sm leading-relaxed">
+                    <p className="mb-3">
+                      <span className="text-tk-green">$</span> <span className="text-tk-text">help</span>
+                    </p>
+                    <div className="grid sm:grid-cols-2 gap-x-8 gap-y-1.5">
+                      {helpCommands.map(([c, d]) => (
+                        <p key={c}>
+                          <span className="text-tk-green">{c}</span>
+                          <span className="text-tk-comment"> — {d}</span>
+                        </p>
+                      ))}
+                      <p className="sm:col-span-2 text-tk-comment mt-2">hint: some commands are undocumented…</p>
+                    </div>
+                    <p className="mt-3">
+                      <span className="text-tk-green">$</span> <span className="cursor-blink text-tk-green">▊</span>
+                    </p>
                   </div>
                 </div>
               )}
