@@ -187,6 +187,14 @@ const projects: {
     link: "https://github.com/vivekkeshava/github-intel-mcp",
   },
   {
+    title: "llm-based-ocr",
+    tags: ["Python", "Gemini", "Gradio"],
+    description:
+      "OCR that returns structure instead of raw text: sends document images (licenses, passports) to Gemini's vision model and extracts fields as JSON with per-field confidence scores. Ships a Gradio UI and a one-shot CLI, with defensive JSON parsing and env-based key management.",
+    tech: "Gemini API, Python, Gradio, Pillow",
+    link: "https://github.com/vivekkeshava/LLMBasedOCR",
+  },
+  {
     title: "llm-document-parser",
     tags: ["Python", "LLMs", "React"],
     description:
