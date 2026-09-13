@@ -280,10 +280,14 @@ export default function Portfolio() {
   const [cmdHistory, setCmdHistory] = useState<string[]>([])
   const [histIdx, setHistIdx] = useState(-1)
   const [showHelp, setShowHelp] = useState(false)
+  const [helpEntries, setHelpEntries] = useState<TermEntry[]>([])
+  const [helpInput, setHelpInput] = useState("")
   const { theme, setTheme } = useTheme()
   const lastScrollTime = useRef(0)
   const termInputRef = useRef<HTMLInputElement>(null)
   const termScrollRef = useRef<HTMLDivElement>(null)
+  const helpInputRef = useRef<HTMLInputElement>(null)
+  const helpScrollRef = useRef<HTMLDivElement>(null)
 
   const heroCommand = "whoami"
   const typingDone = typed === heroCommand
@@ -294,19 +298,34 @@ export default function Portfolio() {
     if (el) el.scrollTop = el.scrollHeight
   }, [termEntries])
 
-  const runCommand = (raw: string) => {
+  useEffect(() => {
+    const el = helpScrollRef.current
+    if (el) el.scrollTop = el.scrollHeight
+  }, [helpEntries])
+
+  // Focus the help terminal's prompt when it opens
+  useEffect(() => {
+    if (showHelp) helpInputRef.current?.focus()
+  }, [showHelp])
+
+  const runCommand = (raw: string, inHelp = false) => {
     const cmd = raw.trim()
     if (!cmd) return
     setCmdHistory((h) => [...h, cmd])
     setHistIdx(-1)
     const [name, ...rest] = cmd.split(/\s+/)
     const arg = rest.join(" ")
+    const appendEntry = inHelp ? setHelpEntries : setTermEntries
     let output: ReactNode
 
     switch (name.toLowerCase()) {
       case "help":
+        if (inHelp) {
+          output = <p className="text-tk-comment">you&apos;re already here — try a command from the list above.</p>
+          break
+        }
         // Opens a separate terminal window below; nothing is logged here
-        setShowHelp((v) => !v)
+        setShowHelp(true)
         return
       case "whoami":
         output = <p>Vivek Keshava — Senior Software Engineer. Distributed systems &amp; AI tooling.</p>
@@ -441,9 +460,16 @@ export default function Portfolio() {
         }
         break
       case "clear":
-        setTermEntries([])
+        if (inHelp) setHelpEntries([])
+        else setTermEntries([])
         return
       case "exit":
+        if (inHelp) {
+          // exit closes the help terminal
+          setShowHelp(false)
+          setHelpEntries([])
+          return
+        }
         output = <p className="text-tk-comment">nice try. you&apos;re staying.</p>
         break
       default:
@@ -453,29 +479,33 @@ export default function Portfolio() {
           </p>
         )
     }
-    setTermEntries((e) => [...e, { cmd, output }])
+    appendEntry((e) => [...e, { cmd, output }])
   }
 
-  const handleTermKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "ArrowUp") {
-      e.preventDefault()
-      if (cmdHistory.length === 0) return
-      const idx = histIdx === -1 ? cmdHistory.length - 1 : Math.max(0, histIdx - 1)
-      setHistIdx(idx)
-      setTermInput(cmdHistory[idx])
-    } else if (e.key === "ArrowDown") {
-      e.preventDefault()
-      if (histIdx === -1) return
-      const idx = histIdx + 1
-      if (idx >= cmdHistory.length) {
-        setHistIdx(-1)
-        setTermInput("")
-      } else {
+  const makeTermKeyDown =
+    (setInput: (v: string) => void) => (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "ArrowUp") {
+        e.preventDefault()
+        if (cmdHistory.length === 0) return
+        const idx = histIdx === -1 ? cmdHistory.length - 1 : Math.max(0, histIdx - 1)
         setHistIdx(idx)
-        setTermInput(cmdHistory[idx])
+        setInput(cmdHistory[idx])
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault()
+        if (histIdx === -1) return
+        const idx = histIdx + 1
+        if (idx >= cmdHistory.length) {
+          setHistIdx(-1)
+          setInput("")
+        } else {
+          setHistIdx(idx)
+          setInput(cmdHistory[idx])
+        }
       }
     }
-  }
+
+  const handleTermKeyDown = makeTermKeyDown(setTermInput)
+  const handleHelpKeyDown = makeTermKeyDown(setHelpInput)
 
   useEffect(() => {
     setMounted(true)
@@ -727,41 +757,6 @@ export default function Portfolio() {
                   </div>
                 </div>
               </div>
-
-              {/* Help terminal — a second terminal window spawned by `help` */}
-              {showHelp && (
-                <div className="mt-4 rounded-lg border border-tk-border bg-tk-surface animate-fade-in-up shadow-2xl shadow-black/10 dark:shadow-black/40">
-                  <WindowBar
-                    title="vivek@keshava: ~/help"
-                    right={
-                      <button
-                        onClick={() => setShowHelp(false)}
-                        aria-label="Close help terminal"
-                        className="font-mono text-xs text-tk-muted hover:text-tk-red transition-colors"
-                      >
-                        [x]
-                      </button>
-                    }
-                  />
-                  <div className="p-5 md:p-6 font-mono text-xs md:text-sm leading-relaxed">
-                    <p className="mb-3">
-                      <span className="text-tk-green">$</span> <span className="text-tk-text">help</span>
-                    </p>
-                    <div className="grid sm:grid-cols-2 gap-x-8 gap-y-1.5">
-                      {helpCommands.map(([c, d]) => (
-                        <p key={c}>
-                          <span className="text-tk-green">{c}</span>
-                          <span className="text-tk-comment"> — {d}</span>
-                        </p>
-                      ))}
-                      <p className="sm:col-span-2 text-tk-comment mt-2">hint: some commands are undocumented…</p>
-                    </div>
-                    <p className="mt-3">
-                      <span className="text-tk-green">$</span> <span className="cursor-blink text-tk-green">▊</span>
-                    </p>
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Profile image */}
@@ -781,6 +776,85 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
+
+          {/* Help terminal — spawned below the hero row so the layout above never shifts */}
+          {showHelp && (
+            <div className="max-w-5xl mx-auto mt-6 animate-fade-in-up">
+              <div className="rounded-lg border border-tk-border bg-tk-surface shadow-2xl shadow-black/10 dark:shadow-black/40">
+                <WindowBar
+                  title="vivek@keshava: ~/help"
+                  right={
+                    <button
+                      onClick={() => {
+                        setShowHelp(false)
+                        setHelpEntries([])
+                      }}
+                      aria-label="Close help terminal"
+                      className="font-mono text-xs text-tk-muted hover:text-tk-red transition-colors"
+                    >
+                      [x]
+                    </button>
+                  }
+                />
+                <div
+                  ref={helpScrollRef}
+                  onClick={() => helpInputRef.current?.focus()}
+                  className="p-5 md:p-6 font-mono text-xs md:text-sm leading-relaxed max-h-[22rem] overflow-y-auto cursor-text"
+                >
+                  <p className="mb-3">
+                    <span className="text-tk-green">$</span> <span className="text-tk-text">help</span>
+                  </p>
+                  <div className="grid sm:grid-cols-2 gap-x-8 gap-y-1.5">
+                    {helpCommands.map(([c, d]) => (
+                      <p key={c}>
+                        <span className="text-tk-green">{c}</span>
+                        <span className="text-tk-comment"> — {d}</span>
+                      </p>
+                    ))}
+                    <p className="sm:col-span-2 text-tk-comment mt-2">
+                      hint: some commands are undocumented… (<span className="text-tk-green">exit</span> closes this
+                      terminal)
+                    </p>
+                  </div>
+
+                  {/* Interactive command log */}
+                  {helpEntries.map((entry, i) => (
+                    <div key={i} className="mt-3">
+                      <p>
+                        <span className="text-tk-green">$</span> <span className="text-tk-text">{entry.cmd}</span>
+                      </p>
+                      <div className="mt-1 text-tk-muted leading-relaxed">{entry.output}</div>
+                    </div>
+                  ))}
+
+                  {/* Prompt */}
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      runCommand(helpInput, true)
+                      setHelpInput("")
+                    }}
+                    className="mt-3 flex items-center gap-2"
+                  >
+                    <span className="text-tk-green">$</span>
+                    <input
+                      ref={helpInputRef}
+                      value={helpInput}
+                      onChange={(e) => setHelpInput(e.target.value)}
+                      onKeyDown={handleHelpKeyDown}
+                      placeholder="type a command"
+                      aria-label="Help terminal command input"
+                      autoComplete="off"
+                      autoCapitalize="off"
+                      spellCheck={false}
+                      className="flex-1 min-w-0 bg-transparent outline-none font-mono text-xs md:text-sm text-tk-text placeholder:text-tk-comment"
+                      style={{ caretColor: "var(--t-green)" }}
+                    />
+                  </form>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
