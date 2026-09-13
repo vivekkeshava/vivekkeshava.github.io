@@ -131,6 +131,84 @@
   background-color: color-mix(in srgb, var(--t-bg) 88%, transparent);
 }
 
+/* Article typography for /writing posts */
+.prose-term {
+  color: var(--t-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.prose-term p {
+  margin-bottom: 1.25rem;
+}
+.prose-term h2 {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--t-text);
+  margin: 2.25rem 0 1rem;
+}
+.prose-term h2::before {
+  content: "## ";
+  color: var(--t-green);
+}
+.prose-term ul {
+  margin: 0 0 1.25rem;
+  padding-left: 0.25rem;
+}
+.prose-term li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.4rem;
+  position: relative;
+}
+.prose-term li::before {
+  content: "▹";
+  color: var(--t-green);
+  position: absolute;
+  left: 0;
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+.prose-term strong {
+  color: var(--t-text);
+  font-weight: 600;
+}
+.prose-term em {
+  color: var(--t-text);
+}
+.prose-term a {
+  color: var(--t-blue);
+  text-decoration: underline;
+  text-decoration-color: var(--t-border);
+  text-underline-offset: 3px;
+}
+.prose-term a:hover {
+  color: var(--t-green);
+}
+.prose-term code {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.875em;
+  background: var(--t-surface-2);
+  border: 1px solid var(--t-border);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  color: var(--t-orange);
+}
+.prose-term pre {
+  background: var(--t-surface);
+  border: 1px solid var(--t-border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.25rem;
+  overflow-x: auto;
+}
+.prose-term pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--t-text);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
 @keyframes fadeInUp {
   to {
     opacity: 1;
