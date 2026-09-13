@@ -228,16 +228,30 @@ function SectionHeading({ index, title }: { index: string; title: string }) {
   )
 }
 
-function WindowBar({ title }: { title: string }) {
+function WindowBar({ title, right }: { title: string; right?: ReactNode }) {
   return (
     <div className="flex items-center gap-2 px-4 py-2.5 border-b border-tk-border bg-tk-surface2 rounded-t-lg">
       <span className="w-3 h-3 rounded-full bg-tk-red" aria-hidden="true" />
       <span className="w-3 h-3 rounded-full bg-tk-orange" aria-hidden="true" />
       <span className="w-3 h-3 rounded-full bg-tk-green" aria-hidden="true" />
       <span className="ml-2 font-mono text-xs text-tk-muted truncate">{title}</span>
+      {right && <span className="ml-auto flex-shrink-0">{right}</span>}
     </div>
   )
 }
+
+const helpCommands: [string, string][] = [
+  ["whoami", "who am i"],
+  ["ls", "list sections"],
+  ["ls projects", "list projects"],
+  ["ls writing", "list blog posts"],
+  ["cat skills.txt", "print skills"],
+  ["open github", "open a profile (github | linkedin)"],
+  ["contact", "get in touch"],
+  ["theme", "toggle light/dark"],
+  ["clear", "clear the terminal"],
+  ["help", "toggle this panel"],
+]
 
 function Tag({ children }: { children: ReactNode }) {
   return (
@@ -257,6 +271,7 @@ export default function Portfolio() {
   const [termInput, setTermInput] = useState("")
   const [cmdHistory, setCmdHistory] = useState<string[]>([])
   const [histIdx, setHistIdx] = useState(-1)
+  const [showHelp, setShowHelp] = useState(false)
   const { theme, setTheme } = useTheme()
   const lastScrollTime = useRef(0)
   const termInputRef = useRef<HTMLInputElement>(null)
@@ -282,26 +297,13 @@ export default function Portfolio() {
 
     switch (name.toLowerCase()) {
       case "help":
-        output = (
-          <div className="space-y-0.5">
-            {[
-              ["whoami", "who am i"],
-              ["ls", "list sections"],
-              ["ls projects", "list projects"],
-              ["ls writing", "list blog posts"],
-              ["cat skills.txt", "print skills"],
-              ["open github", "open a profile (github | linkedin)"],
-              ["contact", "get in touch"],
-              ["theme", "toggle light/dark"],
-              ["clear", "clear the terminal"],
-            ].map(([c, d]) => (
-              <p key={c}>
-                <span className="text-tk-green">{c}</span>
-                <span className="text-tk-comment"> — {d}</span>
-              </p>
-            ))}
-            <p className="text-tk-comment">hint: some commands are undocumented…</p>
-          </div>
+        setShowHelp((v) => !v)
+        output = showHelp ? (
+          <p className="text-tk-comment">help panel closed.</p>
+        ) : (
+          <p>
+            help panel opened below <span className="text-tk-green">↓</span>
+          </p>
         )
         break
       case "whoami":
@@ -607,7 +609,19 @@ export default function Portfolio() {
             {/* Terminal window */}
             <div className="w-full flex-1 animate-fade-in-up">
               <div className="rounded-lg border border-tk-border bg-tk-surface shadow-2xl shadow-black/10 dark:shadow-black/40">
-                <WindowBar title="vivek@keshava: ~" />
+                <WindowBar
+                  title="vivek@keshava: ~"
+                  right={
+                    <button
+                      onClick={() => setShowHelp((v) => !v)}
+                      aria-expanded={showHelp}
+                      aria-label={showHelp ? "Close help panel" : "Open help panel"}
+                      className="font-mono text-xs text-tk-muted hover:text-tk-green transition-colors"
+                    >
+                      [help]
+                    </button>
+                  }
+                />
                 <div
                   ref={termScrollRef}
                   onClick={() => termInputRef.current?.focus()}
@@ -694,6 +708,31 @@ export default function Portfolio() {
                   </div>
                 </div>
               </div>
+
+              {/* Help panel */}
+              {showHelp && (
+                <div className="mt-4 rounded-lg border border-tk-border bg-tk-surface animate-fade-in-up shadow-2xl shadow-black/10 dark:shadow-black/40">
+                  <div className="flex items-center gap-2 px-4 py-2.5 border-b border-tk-border bg-tk-surface2 rounded-t-lg">
+                    <span className="font-mono text-xs text-tk-muted">help.txt</span>
+                    <button
+                      onClick={() => setShowHelp(false)}
+                      aria-label="Close help panel"
+                      className="ml-auto font-mono text-xs text-tk-muted hover:text-tk-red transition-colors"
+                    >
+                      [x]
+                    </button>
+                  </div>
+                  <div className="p-5 font-mono text-xs md:text-sm grid sm:grid-cols-2 gap-x-8 gap-y-1.5">
+                    {helpCommands.map(([c, d]) => (
+                      <p key={c}>
+                        <span className="text-tk-green">{c}</span>
+                        <span className="text-tk-comment"> — {d}</span>
+                      </p>
+                    ))}
+                    <p className="sm:col-span-2 text-tk-comment mt-2">hint: some commands are undocumented…</p>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Profile image */}
