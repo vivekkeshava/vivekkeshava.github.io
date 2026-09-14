@@ -179,6 +179,22 @@ const projects: {
   link?: string
 }[] = [
   {
+    title: "tokengate",
+    tags: ["Java 21", "Spring WebFlux", "Distributed Systems"],
+    description:
+      "LLM inference gateway that admits requests on estimated token cost rather than request rate \u2014 a 200-token classification and a 50k-token summarization are one request each to an RPS limiter, but differ ~100x in cost. Deficit Round Robin fair queueing across tenants with the deficit counted in tokens, and queue depth derived from a latency SLO via Little's Law. Under ~1.6x overload, p99 time-to-first-token measured 2,730 ms against 14,256 ms for a request-rate limiter.",
+    tech: "Java 21, Spring WebFlux, Reactor, Redis (Lua), Resilience4j, Micrometer, Gatling",
+    link: "https://github.com/vivekkeshava/tokengate",
+  },
+  {
+    title: "anchor",
+    tags: ["Python", "PostgreSQL", "Distributed Systems"],
+    description:
+      "Durable execution runtime for LLM agents. Journals every model and tool call to Postgres so a recovering worker replays completed steps instead of re-running them, and puts side effects behind a content-keyed idempotency barrier. Lease-based distribution via SKIP LOCKED with fencing tokens that reject zombie-worker writes, plus suspend/resume that holds zero process state. A chaos harness SIGKILLing workers at random offsets \u2014 100 runs, 60 kills \u2014 recorded zero duplicate side effects.",
+    tech: "Python, PostgreSQL, asyncio, asyncpg, pytest, Hypothesis",
+    link: "https://github.com/vivekkeshava/anchor",
+  },
+  {
     title: "github-engineering-intelligence-mcp",
     tags: ["TypeScript", "MCP", "LLMs"],
     description:
@@ -193,20 +209,6 @@ const projects: {
       "LLM-powered document parser and authenticator: extracts structured fields from document images (licenses, passports) as JSON with per-field confidence scores, validates authenticity, and flags anomalies with over 90% accuracy — cutting manual verification by 60%. Ships a Gradio UI and a one-shot CLI with defensive JSON parsing and env-based key management.",
     tech: "Gemini API, Llama, DeepSeek, Python, Gradio",
     link: "https://github.com/vivekkeshava/LLMBasedOCR",
-  },
-  {
-    title: "twitter-stance-detection",
-    tags: ["Python", "Machine Learning"],
-    description:
-      "Engineered and trained ML models for stance detection on Twitter data using SVM, RNN, and LSTM to classify a reply's position relative to the source tweet. Achieved a 10% accuracy improvement through hyperparameter tuning.",
-    tech: "Scikit-Learn, NumPy, Pandas, SVM, RNN, LSTM",
-  },
-  {
-    title: "stock-trend-prediction",
-    tags: ["Python", "Deep Learning"],
-    description:
-      "Binary classifiers that predict stock trends from sentiment analysis of finance news and time-series market data. Benchmarked traditional ML (SVM, random forest, logistic regression) against deep learning (LSTM, XGBoost) with feature selection and grid-search tuning.",
-    tech: "Keras, XGBoost, LSTM, Scikit-Learn",
   },
 ]
 
@@ -696,7 +698,7 @@ export default function Portfolio() {
                         github
                       </Link>
                       <Link
-                        href="http://www.linkedin.com/in/vivekkeshava"
+                        href="https://www.linkedin.com/in/vivekkeshava"
                         target="_blank"
                         className="inline-flex items-center gap-2 px-3.5 py-2 rounded-md border border-tk-border bg-tk-surface2 text-xs md:text-sm text-tk-text hover:border-tk-blue hover:text-tk-blue transition-colors"
                       >

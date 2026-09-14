@@ -27,3 +27,7 @@ yarn-error.log*
 next-env.d.ts
 
 CLAUDE.md
+.gstack/
+
+# leftover working dir from git filter-branch
+.git-rewrite/
