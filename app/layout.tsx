@@ -34,10 +34,10 @@ export const metadata: Metadata = {
     siteName: "Vivek Keshava",
     images: [
       {
-        url: "/images/vivek-profile.jpg",
-        width: 600,
-        height: 553,
-        alt: "Vivek Keshava Profile",
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Vivek Keshava — Senior Software Engineer",
       },
     ],
     locale: "en_US",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     title: "Vivek Keshava - Software Engineer Portfolio",
     description:
       "Vivek Keshava's personal portfolio showcasing work experience, technical skills, projects, and publications.",
-    images: ["/images/vivek-profile.jpg"],
+    images: ["/images/og-image.png"],
   },
 }
 
