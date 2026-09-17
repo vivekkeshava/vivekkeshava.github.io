@@ -53,8 +53,7 @@ const experience: {
       </>,
       <>
         Built an <strong className="text-tk-text font-semibold">LLM-powered research agent</strong>, exposed as an MCP
-        server, performing cross-source research across Jira, Confluence, and internal knowledge bases — adopted by 50
-        engineers across 4 teams.
+        server, performing cross-source research across Jira, Confluence, and internal knowledge bases.
       </>,
       <>
         Drove org-wide adoption of event-driven messaging (AWS SQS, ActiveMQ) over synchronous REST for dealer
@@ -62,8 +61,7 @@ const experience: {
         <strong className="text-tk-text font-semibold">99.9% uptime</strong> with SLO-driven monitoring.
       </>,
       <>
-        Cut <strong className="text-tk-text font-semibold">P95 API latency ~35%</strong> with a Redis cache-aside
-        strategy and TTL invalidation across high-traffic read paths serving 12+ microservices.
+        Cut <strong className="text-tk-text font-semibold">P95 API latency ~35%</strong> with caching strategies and frontend optimizations.
       </>,
       <>
         Designed and delivered asynchronous notification services on AWS handling{" "}
