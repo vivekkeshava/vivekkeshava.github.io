@@ -862,10 +862,9 @@ export default function Portfolio() {
               microservices and distributed platforms built with reactive Java, Apache Kafka, AWS, and Kubernetes.
             </p>
             <p>
-              At Credit Acceptance I led the architecture of a used-car marketplace, scaling it to 1M+ users — owning
-              everything from credit-application workflows to async notification infrastructure handling 1M+ daily
-              deliveries. Lately I&apos;ve been building AI-powered developer tooling using LLMs and the Model Context
-              Protocol.
+              At Credit Acceptance I was one of the starting engineers for the used car marketplace, scaling it to 1M+ users — owning
+              credit-application workflows to async notification infrastructure handling 1M+ daily
+              deliveries. Lately I&apos;ve been building AI-powered developer tooling using LLMs and MCPs.
             </p>
           </div>
         </div>
