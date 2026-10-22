@@ -678,7 +678,7 @@ export default function Portfolio() {
                     <p className="text-tk-blue mb-4">Senior Software Engineer</p>
                     <p className="font-sans text-tk-muted text-sm md:text-base leading-relaxed mb-5 max-w-xl">
                       I build high-throughput backend systems. Recently built and scaled a used-car marketplace, and
-                      I&apos;m building AI developer tooling with LLMs and the Model Context Protocol.
+                      I&apos;m building AI developer tooling with LLMs and the MCP's.
                     </p>
                     <p className="text-xs md:text-sm text-tk-muted mb-5">
                       <span className="text-tk-purple">const</span> <span className="text-tk-blue">focus</span> = [
